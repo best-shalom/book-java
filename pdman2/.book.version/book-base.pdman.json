@@ -1,0 +1,582 @@
+{
+  "modules": [
+    {
+      "name": "user",
+      "chnname": "用户模块",
+      "entities": [
+        {
+          "title": "user",
+          "fields": [
+            {
+              "name": "id",
+              "type": "IdOrKey",
+              "remark": "主键唯一标识",
+              "chnname": "主键",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "created_time",
+              "type": "Timestamp",
+              "remark": "创建时间",
+              "chnname": "创建时间",
+              "notNull": true,
+              "defaultValue": "current_timestamp"
+            },
+            {
+              "name": "updated_time",
+              "type": "Timestamp",
+              "remark": "更新时间",
+              "chnname": "更新时间",
+              "notNull": true,
+              "defaultValue": "current_timestamp on update current_timestamp"
+            },
+            {
+              "name": "is_deleted",
+              "type": "YesNo",
+              "remark": "0-未删除 1-已删除",
+              "chnname": "是否删除",
+              "notNull": true,
+              "defaultValue": "0"
+            },
+            {
+              "name": "account",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "账号",
+              "notNull": true
+            },
+            {
+              "name": "password",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "密码",
+              "notNull": true
+            },
+            {
+              "name": "name",
+              "type": "MinestString",
+              "remark": "",
+              "chnname": "姓名",
+              "notNull": false
+            },
+            {
+              "name": "information",
+              "type": "String1024",
+              "remark": "",
+              "chnname": "简介"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "用户表",
+          "remark": ""
+        }
+      ],
+      "graphCanvas": {
+        "nodes": [],
+        "edges": []
+      },
+      "associations": []
+    },
+    {
+      "name": "book",
+      "chnname": "书籍模块",
+      "entities": [
+        {
+          "title": "classify",
+          "fields": [
+            {
+              "name": "id",
+              "type": "IdOrKey",
+              "remark": "主键唯一标识",
+              "chnname": "主键",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "created_time",
+              "type": "Timestamp",
+              "remark": "创建时间",
+              "chnname": "创建时间",
+              "notNull": true,
+              "defaultValue": "current_timestamp"
+            },
+            {
+              "name": "updated_time",
+              "type": "Timestamp",
+              "remark": "更新时间",
+              "chnname": "更新时间",
+              "notNull": true,
+              "defaultValue": "current_timestamp on update current_timestamp(0)"
+            },
+            {
+              "name": "is_deleted",
+              "type": "YesNo",
+              "remark": "0-未删除 1-已删除",
+              "chnname": "是否删除",
+              "notNull": true,
+              "defaultValue": "0"
+            },
+            {
+              "name": "name",
+              "type": "MinestString",
+              "remark": "",
+              "chnname": "分组名",
+              "notNull": true
+            },
+            {
+              "name": "information",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "分组简介"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "分组类型",
+          "remark": "书籍的分类"
+        },
+        {
+          "title": "author",
+          "fields": [
+            {
+              "name": "id",
+              "type": "IdOrKey",
+              "remark": "主键唯一标识",
+              "chnname": "主键",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "created_time",
+              "type": "Timestamp",
+              "remark": "创建时间",
+              "chnname": "创建时间",
+              "notNull": true,
+              "defaultValue": "current_timestamp"
+            },
+            {
+              "name": "updated_time",
+              "type": "Timestamp",
+              "remark": "更新时间",
+              "chnname": "更新时间",
+              "notNull": true,
+              "defaultValue": "current_timestamp on update current_timestamp(0)"
+            },
+            {
+              "name": "is_deleted",
+              "type": "YesNo",
+              "remark": "0-未删除 1-已删除",
+              "chnname": "是否删除",
+              "notNull": true,
+              "defaultValue": "0"
+            },
+            {
+              "name": "name",
+              "type": "MinestString",
+              "remark": "",
+              "chnname": "作者名",
+              "notNull": true
+            },
+            {
+              "name": "information",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "作者简介"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "作者信息"
+        },
+        {
+          "title": "type",
+          "fields": [
+            {
+              "name": "id",
+              "type": "IdOrKey",
+              "remark": "主键唯一标识",
+              "chnname": "主键",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "created_time",
+              "type": "Timestamp",
+              "remark": "创建时间",
+              "chnname": "创建时间",
+              "notNull": true,
+              "defaultValue": "current_timestamp"
+            },
+            {
+              "name": "updated_time",
+              "type": "Timestamp",
+              "remark": "更新时间",
+              "chnname": "更新时间",
+              "notNull": true,
+              "defaultValue": "current_timestamp on update current_timestamp(0)"
+            },
+            {
+              "name": "is_deleted",
+              "type": "YesNo",
+              "remark": "0-未删除 1-已删除",
+              "chnname": "是否删除",
+              "notNull": true,
+              "defaultValue": "0"
+            },
+            {
+              "name": "name",
+              "type": "MinestString",
+              "remark": "",
+              "chnname": "阅读类型",
+              "notNull": true
+            },
+            {
+              "name": "information",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "类型简介"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "阅读类型",
+          "remark": "比如是否感兴趣、已经看完、值得回看、不好看等等"
+        },
+        {
+          "title": "book",
+          "fields": [
+            {
+              "name": "id",
+              "type": "IdOrKey",
+              "remark": "主键唯一标识",
+              "chnname": "主键",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "created_time",
+              "type": "Timestamp",
+              "remark": "创建时间",
+              "chnname": "创建时间",
+              "notNull": true,
+              "defaultValue": "current_timestamp"
+            },
+            {
+              "name": "updated_time",
+              "type": "Timestamp",
+              "remark": "更新时间",
+              "chnname": "更新时间",
+              "notNull": true,
+              "defaultValue": "current_timestamp on update current_timestamp(0)"
+            },
+            {
+              "name": "is_deleted",
+              "type": "YesNo",
+              "remark": "0-未删除 1-已删除",
+              "chnname": "是否删除",
+              "notNull": true,
+              "defaultValue": "0"
+            },
+            {
+              "name": "name",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "书名"
+            },
+            {
+              "name": "character_name",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "小说主角"
+            },
+            {
+              "name": "author_id",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "作者id"
+            },
+            {
+              "name": "classify_id",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "小说类型id"
+            },
+            {
+              "name": "type_id",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "个人阅读类型id"
+            },
+            {
+              "name": "finish_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "完结时间"
+            },
+            {
+              "name": "information",
+              "type": "String500",
+              "remark": "",
+              "chnname": "小说简介"
+            },
+            {
+              "name": "tag",
+              "type": "ShortString",
+              "remark": "",
+              "chnname": "内容标签"
+            },
+            {
+              "name": "evaluate",
+              "type": "String500",
+              "remark": "",
+              "chnname": "我的评价"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "书籍信息"
+        }
+      ],
+      "graphCanvas": {
+        "nodes": [],
+        "edges": []
+      },
+      "associations": []
+    }
+  ],
+  "version": "v1.0.0",
+  "message": "初始化",
+  "date": "2024/1/18 10:29:6"
+}
