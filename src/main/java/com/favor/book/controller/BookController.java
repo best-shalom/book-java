@@ -3,7 +3,6 @@ package com.favor.book.controller;
 import com.favor.book.common.Result;
 import com.favor.book.entity.Book;
 import com.favor.book.service.BookService;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -41,8 +41,8 @@ public class BookController {
      */
     @RequestMapping(value = "listBooks", method = RequestMethod.POST)
     @ResponseBody
-    public Result listBooks(@PageableDefault() Pageable pageable, Long classifyId, Long typeId) {
-        Page<Book> res = bookService.listBooks(pageable, classifyId, typeId);
+    public Result listBooks(@PageableDefault() Pageable pageable, Long classifyId, Long typeId, int orderByUpload, int orderByFinish) {
+        List<Book> res = bookService.listBooks(pageable, classifyId, typeId, orderByUpload, orderByFinish);
         return Result.success(res);
 
     }

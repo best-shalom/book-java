@@ -14,6 +14,7 @@ import javax.servlet.MultipartConfigElement;
  * 1.SpringBootApplication注解，这个注解表示该类是一个 Spring Boot 应用。
  * 2.MapperScan注解，扫描Mapper所在的文件夹
  * 直接运行 BookApplication 类即可启动，启动成功后在控制台输出信息，默认端口是 8080
+ * @author Administrator
  */
 @SpringBootApplication
 @MapperScan("com.favor.book.dao")
@@ -42,6 +43,7 @@ public class BookApplication {
     /**
      * 使用QueryDSL的功能时，会依赖使用到JPAQueryFactory，而JPAQueryFactory在这里依赖使用EntityManager，所以在主类中做如下配置，使得Spring自动帮我们注入EntityManager与自动管理JPAQueryFactory
      */
+    @Bean
     public JPAQueryFactory jpaQueryFactory(EntityManager entityManager){
         return new JPAQueryFactory(entityManager);
     }

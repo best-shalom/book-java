@@ -7,13 +7,13 @@ import com.favor.book.utils.FileUtil;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,19 +26,22 @@ public class BookService {
     @Resource
     BookRepository bookRepository;
 
+    // TODO spring的装配和注入？
+    @Resource
     JPAQueryFactory jpaQueryFactory;
 
     /**
      * 添加单本书籍
+     *
      * @param file 书籍文件
      * @return 上传结果
      */
-    public String addOneBook(MultipartFile file){
-        Map<String,String> res=fileUtil.addOneFile(file);
-        if(res==null) {
+    public String addOneBook(MultipartFile file) {
+        Map<String, String> res = fileUtil.addOneFile(file);
+        if (res == null) {
             return "文件上传失败";
         }
-        Book book=new Book();
+        Book book = new Book();
         book.setName(res.get("name"));
         book.setCharacterName("1");
         book.setAuthorId(1L);
@@ -53,11 +56,14 @@ public class BookService {
 
     /**
      * 按照小说类型or阅读类型筛选小说
-     * @param classifyId 小说类型
-     * @param typeId 阅读类型
+     *
+     * @param classifyId    小说类型
+     * @param typeId        阅读类型
+     * @param orderByUpload 是否根据上传时间排序，0-否，1-正序，2-倒序
+     * @param orderByFinish 是否根据完结时间排序，0-否，1-正序，2-倒序
      * @return 返回指定排序方式的小说列表
      */
-    public Page<Book> listBooks(Pageable pageable, Long classifyId, Long typeId) {
+    public List<Book> listBooks(Pageable pageable, Long classifyId, Long typeId, int orderByUpload, int orderByFinish) {
         // Pageable 是Spring Data库中定义的一个接口，用于构造翻页查询，是所有分页相关信息的一个抽象，通过该接口，我们可以得到和分页相关所有信息（例如pageNumber、pageSize等），这样，Jpa就能够通过pageable参数来得到一个带分页信息的Sql语句。
         QBook book = QBook.book;
         // 初始化组装条件(book.isDeleted为0，即未删除的书籍)
@@ -66,7 +72,18 @@ public class BookService {
         predicate = classifyId == null ? predicate : ExpressionUtils.and(predicate, book.classifyId.eq(classifyId));
         predicate = typeId == null ? predicate : ExpressionUtils.and(predicate, book.typeId.eq(typeId));
         // page的页面下标从0开始
-        return bookRepository.findAll(predicate, pageable);
+        // return bookRepository.findAll(predicate, pageable);
+        return jpaQueryFactory.selectFrom(book)
+                // 查询对象
+                .where(predicate)
+                // 查询条件
+                .orderBy(book.createTime.asc())
+                // 起始页
+                .offset(pageable.getOffset())
+                // 每页大小
+                .limit(pageable.getPageSize())
+                // 排序方式
+                .fetch();
     }
 
 

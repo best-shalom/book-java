@@ -2,14 +2,12 @@ package com.favor.book.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author Administrator
@@ -17,11 +15,14 @@ import javax.persistence.Table;
 @ApiModel(value = "阅读类型",description = "")
 @Data
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name="type")
 public class Type{
     /** 主键;自增主键 */
     @ApiModelProperty(name = "主键",notes = "自增主键")
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
     /** 创建时间;创建时间 */
     @ApiModelProperty(name = "创建时间",notes = "创建时间")

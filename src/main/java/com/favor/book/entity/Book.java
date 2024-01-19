@@ -3,10 +3,10 @@ package com.favor.book.entity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -15,11 +15,14 @@ import java.util.Date;
 @ApiModel(value = "书籍信息",description = "")
 @Data
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name="book")
 public class Book{
     /** 主键;自增主键 */
     @ApiModelProperty(name = "主键",notes = "自增主键")
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
     /** 创建时间;创建时间 */
     @ApiModelProperty(name = "创建时间",notes = "创建时间")

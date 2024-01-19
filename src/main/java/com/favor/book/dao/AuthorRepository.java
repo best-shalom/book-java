@@ -1,7 +1,7 @@
 package com.favor.book.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.favor.book.entity.Author;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AuthorRepository extends BaseMapper<Author> {
+public interface AuthorRepository extends JpaRepository<Author, Long> {
 }

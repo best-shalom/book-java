@@ -1,5 +1,6 @@
 package com.favor.book.controller;
 
+import com.favor.book.common.Result;
 import com.favor.book.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import javax.annotation.Resource;
 /**
  * 1.声明为Controller方法
  * 2.方法的基础路径为/user
+ * @author Administrator
  */
 @Controller
 @RequestMapping(value = "/user")
@@ -32,13 +34,13 @@ public class UserController {
      */
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public String login(@RequestParam(name="account") String account,@RequestParam(name = "password") String password){
+    public Result login(@RequestParam(name = "account") String account, @RequestParam(name = "password") String password) {
         return userService.login(account,password);
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     @ResponseBody
-    public String register(@RequestParam(name = "account") String account,@RequestParam(name = "password") String password){
+    public Result register(@RequestParam(name = "account") String account, @RequestParam(name = "password") String password) {
         return userService.register(account,password);
     }
 }

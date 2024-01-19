@@ -1,7 +1,10 @@
 package com.favor.book.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.favor.book.entity.Classify;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ClassifyRepository extends BaseMapper<Classify> {
+/**
+ * @author Administrator
+ */
+public interface ClassifyRepository extends JpaRepository<Classify, Long> {
 }
