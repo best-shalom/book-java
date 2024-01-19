@@ -23,7 +23,8 @@ public class UserController {
     UserService userService;
 
     /**
-     * 访问地址localhost:8080/user/login
+     * 1.RequestMapping注解：访问地址localhost:8080/user/login
+     * 2.ResponseBody注解
      * 接受参数名为account和password
      * @param account 账号
      * @param password 密码
@@ -33,5 +34,11 @@ public class UserController {
     @ResponseBody
     public String login(@RequestParam(name="account") String account,@RequestParam(name = "password") String password){
         return userService.login(account,password);
+    }
+
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    @ResponseBody
+    public String register(@RequestParam(name = "account") String account,@RequestParam(name = "password") String password){
+        return userService.register(account,password);
     }
 }

@@ -16,18 +16,40 @@ public class UserService {
     UserRepository userRepository;
 
 
-    public String login(String account,String password){
-        //通过map条件查询用户信息
+    public User getUserByAccount(String account){
         Map<String,Object> map=new HashMap<>();
         map.put("account",account);
         List<User> userList=userRepository.selectByMap(map);
         if(userList.isEmpty()){
+            return null;
+        }
+        return userList.get(0);
+    }
+    public String login(String account,String password){
+        //通过map条件查询用户信息
+        User user=getUserByAccount(account);
+        if(user==null){
             return "账号不存在";
         }
-        if( userList.get(0).getPassword().equals(password)){
+        if(user.getPassword().equals(password)){
             return "登录成功";
         }
-
         return "密码错误";
+    }
+
+    public String register(String account,String password){
+        User user=getUserByAccount(account);
+        if(user!=null){
+            return "账号已存在，请更换";
+        }
+        user=new User();
+        user.setAccount(account);
+        user.setPassword(password);
+        // insert的返回结果为数据库表改变的条数
+        int result=userRepository.insert(user);
+        if(result==0){
+            return "注册失败";
+        }
+        return "注册成功";
     }
 }
