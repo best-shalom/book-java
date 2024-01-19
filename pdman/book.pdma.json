@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.2.1",
   "createdTime": "2024-1-17 15:56:53",
-  "updatedTime": "2024-1-19 11:31:36",
+  "updatedTime": "2024-1-19 15:55:07",
   "dbConns": [],
   "profile": {
     "default": {
@@ -1136,6 +1136,23 @@
           "id": "69097949-B22E-40F9-B4AA-727CCB19BD13"
         },
         {
+          "defKey": "upload_user_id",
+          "defName": "上传用户",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "extProps": {},
+          "domain": "16120F75-6AA7-4483-868D-F07F511BB081",
+          "id": "F7DC8FCE-B028-4F2D-BCD0-A78520D4C0D7"
+        },
+        {
           "defKey": "information",
           "defName": "小说简介",
           "comment": "",
@@ -1153,7 +1170,24 @@
           "id": "129F2AF3-BFFB-49F2-AF66-2E05C84DA07E"
         },
         {
-          "defKey": "path",
+          "defKey": "file_size",
+          "defName": "小说大小",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "extProps": {},
+          "domain": "97B646DC-6037-4DE9-9149-CECBEF476274",
+          "id": "8F55FB32-7C34-4867-A0EF-6FFE03E39B6E"
+        },
+        {
+          "defKey": "file_path",
           "defName": "文件路径",
           "comment": "",
           "type": "",

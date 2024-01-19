@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.2.1",
   "createdTime": "2024-1-17 15:56:53",
-  "updatedTime": "2024-1-19 11:24:29",
+  "updatedTime": "2024-1-19 11:31:36",
   "dbConns": [],
   "profile": {
     "default": {
@@ -1119,6 +1119,23 @@
           "id": "7DF354A0-EF2C-4E5D-ABEA-E358CAD25491"
         },
         {
+          "defKey": "upload_time",
+          "defName": "上传时间",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "extProps": {},
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+          "id": "69097949-B22E-40F9-B4AA-727CCB19BD13"
+        },
+        {
           "defKey": "information",
           "defName": "小说简介",
           "comment": "",
@@ -1134,6 +1151,23 @@
           "extProps": {},
           "domain": "4BB5F2AC-6CE0-41F6-BDAE-EB4E4DADB077",
           "id": "129F2AF3-BFFB-49F2-AF66-2E05C84DA07E"
+        },
+        {
+          "defKey": "path",
+          "defName": "文件路径",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "extProps": {},
+          "domain": "B72DB88F-18E9-49F4-B469-A1CAC14B056E",
+          "id": "9566FAB7-6F4E-4D3D-A2C2-0C0B486E48F8"
         },
         {
           "defKey": "tag",
@@ -1168,23 +1202,6 @@
           "extProps": {},
           "domain": "4BB5F2AC-6CE0-41F6-BDAE-EB4E4DADB077",
           "id": "34D7A4E5-6AC5-43AB-BB62-6AF07C3844DF"
-        },
-        {
-          "defKey": "upload_time",
-          "defName": "上传时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "69097949-B22E-40F9-B4AA-727CCB19BD13"
         }
       ],
       "correlations": [],
