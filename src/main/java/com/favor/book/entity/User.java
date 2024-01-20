@@ -20,6 +20,7 @@ import java.util.Date;
  * 默认生成字段解决方式：<a href="https://blog.csdn.net/harryshumxu/article/details/128716338">...</a>
  * 7.DynamicUpdate（默认为true）：如果在实体类上使用此注解，表示update对象的时候,生成动态的update语句,参考：<a href="https://blog.csdn.net/weixin_42126028/article/details/107548733">...</a>
  * 它的作用并不是更新指定字段，而是更新变化的字段;如果对象中某个属性为null，当执行更新操作时，如果这个字段在数据库中已经有值了当然会被null覆盖, 因为你save()的对象中这个字段跟数据库中的值不同。如果你更新的字段和数据库中的值相同则不更新该字段，解决方法是先把要更新的数据查询出来，查出原有值再把想变化的字段改变一下，再使用save()保存即可。
+ * 使用后会貌似强制要求create_time的数据库字段类型为datetime而不是timestamp？
  * @author Administrator
  */
 @ApiModel(value = "用户信息",description = "")

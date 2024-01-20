@@ -468,37 +468,43 @@
               "name": "name",
               "type": "DefaultString",
               "remark": "",
-              "chnname": "书名"
+              "chnname": "书名",
+              "notNull": true
             },
             {
               "name": "character_name",
               "type": "DefaultString",
               "remark": "",
-              "chnname": "小说主角"
+              "chnname": "小说主角",
+              "notNull": true
             },
             {
               "name": "author_id",
               "type": "IdOrKey",
               "remark": "",
-              "chnname": "作者id"
+              "chnname": "作者id",
+              "notNull": true
             },
             {
               "name": "classify_id",
               "type": "IdOrKey",
               "remark": "",
-              "chnname": "小说类型id"
+              "chnname": "小说类型id",
+              "notNull": true
             },
             {
               "name": "type_id",
               "type": "IdOrKey",
               "remark": "",
-              "chnname": "个人阅读类型id"
+              "chnname": "个人阅读类型id",
+              "notNull": true
             },
             {
               "name": "finish_time",
               "type": "DateTime",
               "remark": "",
-              "chnname": "完结时间"
+              "chnname": "完结时间",
+              "notNull": true
             },
             {
               "name": "information",

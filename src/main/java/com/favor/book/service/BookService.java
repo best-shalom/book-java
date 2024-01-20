@@ -1,5 +1,6 @@
 package com.favor.book.service;
 
+import com.favor.book.common.Result;
 import com.favor.book.dao.BookRepository;
 import com.favor.book.entity.Book;
 import com.favor.book.entity.QBook;
@@ -36,10 +37,10 @@ public class BookService {
      * @param file 书籍文件
      * @return 上传结果
      */
-    public String addOneBook(MultipartFile file) {
+    public Result addOneBook(MultipartFile file) {
         Map<String, String> res = fileUtil.addOneFile(file);
         if (res == null) {
-            return "文件上传失败";
+            return Result.error("文件上传失败");
         }
         Book book = new Book();
         book.setName(res.get("name"));
@@ -50,7 +51,7 @@ public class BookService {
         book.setTime(new Date());
         book.setInformation("1");
         bookRepository.save(book);
-        return "书籍保存数据库成功";
+        return Result.success("书籍保存数据库成功");
 
     }
 

@@ -27,10 +27,7 @@ public class TypeService {
         return typeRepository.findById(id);
     }
 
-    public Result addType(String name, String information) {
-        Type type = new Type();
-        type.setName(name);
-        type.setInformation(information);
+    public Result addType(Type type) {
         return Result.success(typeRepository.save(type));
     }
 

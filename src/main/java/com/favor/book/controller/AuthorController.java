@@ -26,22 +26,22 @@ public class AuthorController {
         return authorService.getAllAuthors();
     }
 
-    @RequestMapping(value = "/getById", method = RequestMethod.GET)
+    @RequestMapping(value = "/getById", method = RequestMethod.POST)
     public Optional<Author> getAuthorById(Long id) {
         return authorService.getAuthorById(id);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Result addAuthor(String name, String information) {
-        return authorService.addAuthor(name, information);
+    public Result addAuthor(Author author) {
+        return authorService.addAuthor(author);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Result deleteAuthor(Long id) {
         return authorService.deleteAuthor(id);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public Result updateAuthor(Author author) {
         return authorService.updateAuthor(author);
     }

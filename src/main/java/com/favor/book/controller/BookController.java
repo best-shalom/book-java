@@ -24,20 +24,26 @@ public class BookController {
     @Resource
     BookService bookService;
 
+    /**
+     * 新增单本书籍
+     * @param file 书籍文件
+     * @return 返回是否成功
+     */
     @RequestMapping(value = "/addOneBook",method = RequestMethod.POST)
     @ResponseBody
-    public String addOneBook(MultipartFile file){
+    public Result addOneBook(MultipartFile file){
         return bookService.addOneBook(file);
     }
 
     /**
+     * 按条件过滤书籍列表
+     * </p>
      * 在请求中只需要在方法的参数中直接定义一个pageable类型的参数，当Spring发现这个参数时，Spring会自动的根据request的参数来组装该pageable对象。
      * Spring支持的request参数如下：
      * page ：第几页，从0开始，默认为第0页
      * size ：每一页的大小，默认为10
      * sort ：排序相关的信息，以`property[,ASC|DESC]`的方式组织，例如`sort=firstname&sort=lastname,desc`表
-     *
-     * @return 分页筛选结果
+     * @return 返回分页筛选结果
      */
     @RequestMapping(value = "listBooks", method = RequestMethod.POST)
     @ResponseBody

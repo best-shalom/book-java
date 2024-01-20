@@ -28,10 +28,7 @@ public class AuthorService {
         return authorRepository.findById(id);
     }
 
-    public Result addAuthor(String name, String information) {
-        Author author = new Author();
-        author.setName(name);
-        author.setInformation(information);
+    public Result addAuthor(Author author) {
         return Result.success(authorRepository.save(author));
     }
 

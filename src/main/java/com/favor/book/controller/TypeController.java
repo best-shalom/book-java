@@ -24,23 +24,23 @@ public class TypeController {
         return typeService.getAllTypes();
     }
 
-    @RequestMapping(value = "/getById", method = RequestMethod.GET)
-    public Optional<Type> getTypeById(@RequestParam Long id) {
+    @RequestMapping(value = "/getById", method = RequestMethod.POST)
+    public Optional<Type> getTypeById(Long id) {
         return typeService.getTypeById(id);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Result addType(@RequestParam String name, @RequestParam String information) {
-        return typeService.addType(name, information);
+    public Result addType(Type type) {
+        return typeService.addType(type);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result deleteType(@RequestParam Long id) {
+    public Result deleteType(Long id) {
         return typeService.deleteType(id);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public Result updateType(@RequestBody Type type) {
+    public Result updateType(Type type) {
         return typeService.updateType(type);
     }
 }
