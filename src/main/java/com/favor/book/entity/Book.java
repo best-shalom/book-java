@@ -30,7 +30,9 @@ public class Book{
     @ApiModelProperty(name = "是否删除",notes = "是否删除")
     private int isDeleted ;
     @ApiModelProperty(name = "书名",notes = "")
-    private String name ;
+    private String newName;
+    @ApiModelProperty(name = "文件名", notes = "")
+    private String oldName;
     @ApiModelProperty(name = "小说主角",notes = "")
     private String characterName ;
     @ApiModelProperty(name = "小说作者",notes = "")

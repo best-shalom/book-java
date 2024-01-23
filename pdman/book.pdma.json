@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.2.1",
   "createdTime": "2024-1-17 15:56:53",
-  "updatedTime": "2024-1-23 16:01:38",
+  "updatedTime": "2024-1-23 16:39:47",
   "dbConns": [],
   "profile": {
     "default": {
@@ -1018,7 +1018,7 @@
           "id": "C9C1BFD9-3815-4468-82F6-40397596CE8C"
         },
         {
-          "defKey": "name",
+          "defKey": "new_name",
           "defName": "书名",
           "comment": "",
           "type": "",
@@ -1033,6 +1033,23 @@
           "extProps": {},
           "domain": "97B646DC-6037-4DE9-9149-CECBEF476274",
           "id": "99F35B1C-951A-4D1A-8239-F65B51361C7E"
+        },
+        {
+          "defKey": "old_name",
+          "defName": "文件名",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "extProps": {},
+          "domain": "97B646DC-6037-4DE9-9149-CECBEF476274",
+          "id": "C67BEE63-426F-4E8B-AB6E-7BD6B2F9FFF6"
         },
         {
           "defKey": "character_name",

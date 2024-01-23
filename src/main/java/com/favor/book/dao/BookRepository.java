@@ -17,5 +17,5 @@ import org.springframework.stereotype.Repository;
  * 2.dao层继承Repository<实体类型,主键id的类型>
  */
 @Repository
-public interface BookRepository extends JpaRepository<Book, Integer>, QuerydslPredicateExecutor<Book> {
+public interface BookRepository extends JpaRepository<Book, Long>, QuerydslPredicateExecutor<Book> {
 }

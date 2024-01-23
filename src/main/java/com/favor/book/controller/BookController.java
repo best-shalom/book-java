@@ -31,8 +31,14 @@ public class BookController {
      */
     @RequestMapping(value = "/addOneBook",method = RequestMethod.POST)
     @ResponseBody
-    public Result addOneBook(MultipartFile file){
-        return bookService.addOneBook(file);
+    public Result addOneBook(MultipartFile file, String newName) {
+        return bookService.addOneBook(file, newName);
+    }
+
+    @RequestMapping(value = "/downloadOneBook", method = RequestMethod.POST)
+    @ResponseBody
+    public Result downloadOneBook(Long id, String savePath) {
+        return bookService.downloadOneBook(id, savePath);
     }
 
     /**

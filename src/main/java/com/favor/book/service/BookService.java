@@ -37,24 +37,56 @@ public class BookService {
      * @param file 书籍文件
      * @return 上传结果
      */
-    public Result addOneBook(MultipartFile file) {
-        Map<String, String> res = fileUtil.addOneFile(file);
+    public Result addOneBook(MultipartFile file, String newName) {
+        Map<String, String> res = fileUtil.addOneFile(file, newName);
         if (res == null) {
             return Result.error("文件上传失败");
         }
+        String name = res.get("newName");
+        String oldName = res.get("oldName");
+        String size = res.get("size");
+        String filePath = res.get("filePath");
         Book book = new Book();
-        book.setName(res.get("name"));
+        book.setNewName(name);
+        book.setOldName(oldName);
+        // 主角，从文件读取
         book.setCharacterName("1");
+        // id系列，从文件读取后在相应的表查询
         book.setAuthorId(1L);
         book.setClassifyId(1L);
         book.setTypeId(1L);
+        // 完结时间，从文件读取
+        book.setFinishTime(new Date());
         book.setUploadTime(new Date());
+        // 上传用户，从登录信息取
+        book.setUploadUserId(1L);
+        // 小说简介，从文件读取
         book.setInformation("1");
+        book.setFileSize(size);
+        book.setFilePath(filePath);
+        // 小说标签，从文件取
+        book.setTag("1");
+        // 评价，后续阅读新增
         bookRepository.save(book);
         return Result.success("书籍保存数据库成功");
 
     }
 
+    public Result downloadOneBook(Long id, String savePath) {
+        Book book = getBookById(id);
+        String filePath = book.getFilePath();
+        String fileName = book.getNewName();
+        if (fileUtil.downloadOneFile(filePath, fileName, savePath)) {
+            return Result.success("下载成功");
+        }
+        return Result.error("下载失败");
+
+    }
+
+
+    public Book getBookById(Long id) {
+        return bookRepository.getById(id);
+    }
     /**
      * 按照小说类型or阅读类型筛选小说
      *
