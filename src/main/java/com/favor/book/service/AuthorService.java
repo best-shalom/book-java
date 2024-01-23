@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,12 +19,12 @@ public class AuthorService {
     @Resource
     private AuthorRepository authorRepository;
 
-    public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
+    public Result getAllAuthors() {
+        return Result.success(authorRepository.findAll());
     }
 
-    public Optional<Author> getAuthorById(Long id) {
-        return authorRepository.findById(id);
+    public Result getAuthorById(Long id) {
+        return Result.success(authorRepository.findById(id));
     }
 
     public Result addAuthor(Author author) {

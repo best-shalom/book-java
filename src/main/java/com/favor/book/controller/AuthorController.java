@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Administrator
@@ -22,12 +20,12 @@ public class AuthorController {
     private AuthorService authorService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<Author> getAllAuthors() {
+    public Result getAllAuthors() {
         return authorService.getAllAuthors();
     }
 
     @RequestMapping(value = "/getById", method = RequestMethod.POST)
-    public Optional<Author> getAuthorById(Long id) {
+    public Result getAuthorById(Long id) {
         return authorService.getAuthorById(id);
     }
 

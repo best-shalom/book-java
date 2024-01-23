@@ -1,14 +1,14 @@
 {
   "name": "v1.0.0",
   "desc": "初始化",
-  "date": 1705572553722,
+  "date": 1705995352861,
   "data": {
     "name": "book",
     "describe": "book的数据库模型",
     "avatar": "",
     "version": "4.2.1",
     "createdTime": "2024-1-17 15:56:53",
-    "updatedTime": "2024-1-18 10:56:18",
+    "updatedTime": "2024-1-23 15:31:58",
     "dbConns": [],
     "profile": {
       "default": {
@@ -197,7 +197,7 @@
           "ServiceImpl": "{{  var today=new Date();\n    var fullYear=today.getFullYear();\n    var month=today.getMonth() + 1;\n    var days=today.getDate();\n    \n    var pkVarName = \"undefinedId\";\n    var pkVarNameU = \"UndefinedId\";\n    var pkFieldKey = \"UNDEFINED\";\n    var pkDataType = \"String\";\n    it.entity.fields.forEach(function(field){\n        if(field.primaryKey){\n            pkFieldKey = field.defKey;\n            pkVarName = it.func.camel(field.defKey,false);\n            pkVarNameU = it.func.camel(field.defKey,true);\n            pkDataType = field[\"type\"];\n            return;\n        }\n    });\n    \n    var pkgName = it.entity.env.base.nameSpace;\n    var beanClass = it.entity.env.base.codeRoot;\n    var beanVarName = beanClass.charAt(0).toLowerCase()+beanClass.slice(1);\n    var serviceClass = beanClass+'Service';\n    var serviceVarName= beanVarName+'Service';\n    var mapperName = beanVarName+'Mapper';\n    \n}}package {{=pkgName}}.service.impl;\n$blankline\nimport cn.hutool.core.util.StrUtil;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\nimport com.baomidou.mybatisplus.core.metadata.IPage;\nimport com.baomidou.mybatisplus.extension.plugins.pagination.Page;\nimport com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;\nimport com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;\n\nimport {{=pkgName}}.entity.{{=beanClass}};\nimport {{=pkgName}}.mapper.{{=beanClass}}Mapper;\nimport {{=pkgName}}.service.{{=serviceClass}};\n\n /**\n * {{=it.entity.defName}};({{=it.entity.defKey}})表服务实现类\n * @author : http://www.chiner.pro\n * @date : {{=fullYear}}-{{=month}}-{{=days}}\n */\n@Service\npublic class {{=serviceClass}}Impl implements {{=serviceClass}}{\n    @Autowired\n    private {{=beanClass}}Mapper {{=mapperName}};\n    $blankline\n    /** \n     * 通过ID查询单条数据 \n     *\n     * @param {{=pkVarName}} 主键\n     * @return 实例对象\n     */\n    public {{=beanClass}} queryById({{=pkDataType}} {{=pkVarName}}){\n        return {{=mapperName}}.selectById({{=pkVarName}});\n    }\n    $blankline\n    /**\n     * 分页查询\n     *\n     * @param {{=beanVarName}} 筛选条件\n     * @param current 当前页码\n     * @param size  每页大小\n     * @return\n     */\n    public Page<{{=beanClass}}> paginQuery({{=beanClass}} {{=beanVarName}}, long current, long size){\n        //1. 构建动态查询条件\n        LambdaQueryWrapper<{{=beanClass}}> queryWrapper = new LambdaQueryWrapper<>();\n        {{~it.entity.fields.filter(function(e){return e[\"type\"]===\"String\"&&e.defKey !== pkFieldKey}):field:index}}\n        if(StrUtil.isNotBlank({{=beanVarName}}.get{{=it.func.camel(field.defKey,true)}}())){\n            queryWrapper.eq({{=beanClass}}::get{{=it.func.camel(field.defKey,true)}}, {{=beanVarName}}.get{{=it.func.camel(field.defKey,true)}}());\n        }\n        {{~}}\n\n        //2. 执行分页查询\n        Page<{{=beanClass}}> pagin = new Page<>(current , size , true);\n        IPage<{{=beanClass}}> selectResult = {{=mapperName}}.selectByPage(pagin , queryWrapper);\n        pagin.setPages(selectResult.getPages());\n        pagin.setTotal(selectResult.getTotal());\n        pagin.setRecords(selectResult.getRecords());\n\n        //3. 返回结果\n        return pagin;\n    }\n    $blankline\n    /** \n     * 新增数据\n     *\n     * @param {{=beanVarName}} 实例对象\n     * @return 实例对象\n     */\n    public {{=beanClass}} insert({{=beanClass}} {{=beanVarName}}){\n        {{=mapperName}}.insert({{=beanVarName}});\n        return {{=beanVarName}};\n    }\n    $blankline\n    /** \n     * 更新数据\n     *\n     * @param {{=beanVarName}} 实例对象\n     * @return 实例对象\n     */\n    public {{=beanClass}} update({{=beanClass}} {{=beanVarName}}){\n        //1. 根据条件动态更新\n        LambdaUpdateChainWrapper<{{=beanClass}}> chainWrapper = new LambdaUpdateChainWrapper<{{=beanClass}}>({{=mapperName}});\n        {{~it.entity.fields.filter(function(e){return e[\"type\"]===\"String\"&&e.defKey !== pkFieldKey}):field:index}}\n        if(StrUtil.isNotBlank({{=beanVarName}}.get{{=it.func.camel(field.defKey,true)}}())){\n            chainWrapper.eq({{=beanClass}}::get{{=it.func.camel(field.defKey,true)}}, {{=beanVarName}}.get{{=it.func.camel(field.defKey,true)}}());\n        }\n        {{~}}\n        //2. 设置主键，并更新\n        chainWrapper.set({{=beanClass}}::get{{=pkVarNameU}}, {{=beanVarName}}.get{{=pkVarNameU}}());\n        boolean ret = chainWrapper.update();\n        //3. 更新成功了，查询最最对象返回\n        if(ret){\n            return queryById({{=beanVarName}}.get{{=pkVarNameU}}());\n        }else{\n            return {{=beanVarName}};\n        }\n    }\n    $blankline\n    /** \n     * 通过主键删除数据\n     *\n     * @param {{=pkVarName}} 主键\n     * @return 是否成功\n     */\n    public boolean deleteById({{=pkDataType}} {{=pkVarName}}){\n        int total = {{=mapperName}}.deleteById({{=pkVarName}});\n        return total > 0;\n    }\n}",
           "Mapper": "{{  var today=new Date();\n    var fullYear=today.getFullYear();\n    var month=today.getMonth() + 1;\n    var days=today.getDate();\n    \n    var pkVarName = \"undefinedId\";\n    var pkDataType = \"String\";\n    it.entity.fields.forEach(function(field){\n        if(field.primaryKey){\n            pkVarName = it.func.camel(field.defKey,false);\n            pkDataType = field[\"type\"];\n            return;\n        }\n    });\n    \n    var pkgName = it.entity.env.base.nameSpace;\n    var beanClass = it.entity.env.base.codeRoot;\n    var beanVarName = beanClass.charAt(0).toLowerCase()+beanClass.slice(1);\n    var serviceClass = beanClass+'Service';\n    var serviceVarName= beanVarName+'Service';\n    \n}}package {{=pkgName}}.mapper;\n$blankline\n\nimport com.baomidou.mybatisplus.core.conditions.Wrapper;\nimport com.baomidou.mybatisplus.core.mapper.BaseMapper;\nimport com.baomidou.mybatisplus.core.metadata.IPage;\nimport com.baomidou.mybatisplus.core.toolkit.Constants;\nimport org.apache.ibatis.annotations.Mapper;\nimport org.apache.ibatis.annotations.Param;\nimport {{=pkgName}}.entity.{{=beanClass}};\n$blankline\n\n /**\n * {{=it.entity.defName}};({{=it.entity.defKey}})表数据库访问层\n * @author : http://www.chiner.pro\n * @date : {{=fullYear}}-{{=month}}-{{=days}}\n */\n@Mapper\npublic interface {{=beanClass}}Mapper  extends BaseMapper<{{=beanClass}}>{\n    /** \n     * 分页查询指定行数据\n     *\n     * @param page 分页参数\n     * @param wrapper 动态查询条件\n     * @return 分页对象列表\n     */\n    IPage<{{=beanClass}}> selectByPage(IPage<{{=beanClass}}> page , @Param(Constants.WRAPPER) Wrapper<{{=beanClass}}> wrapper);\n}",
           "Mapper.xml": "{{  var today=new Date();\n    var fullYear=today.getFullYear();\n    var month=today.getMonth() + 1;\n    var days=today.getDate();\n    \n    var pkVarName = \"undefinedId\";\n    var pkDataType = \"String\";\n    var pkField = \"UNDEFINED_ID\";\n    it.entity.fields.forEach(function(field){\n        if(field.primaryKey){\n            pkField = field.defKey;\n            pkVarName = it.func.camel(field.defKey,false);\n            pkDataType = field[\"type\"];\n            return;\n        }\n    });\n    \n    var pkgName = it.entity.env.base.nameSpace;\n    var beanClass = it.entity.env.base.codeRoot;\n    var beanVarName = beanClass.charAt(0).toLowerCase()+beanClass.slice(1);\n    var serviceClass = beanClass+'Service';\n    var serviceVarName= beanVarName+'Service';\n    \n}}<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\n$blankline\n\n<mapper namespace=\"{{=pkgName}}.mapper.{{=beanClass}}Mapper\">\n     <select id=\"selectByPage\" resultType=\"{{=pkgName}}.entity.{{=beanClass}}\">\n        select * from user ${ew.customSqlSegment}\n    </select>\n</mapper>\n\n",
-          "Entity": "{{  var today=new Date();\n    var fullYear=today.getFullYear();\n    var month=today.getMonth() + 1;\n    var days=today.getDate();\n    \n    var pkVarName = \"undefinedId\";\n    var pkDataType = \"String\";\n    it.entity.fields.forEach(function(field){\n        if(field.primaryKey){\n            pkVarName = it.func.camel(field.defKey,false);\n            pkDataType = field[\"type\"];\n            return;\n        }\n    });\n    \n    var pkgName = it.entity.env.base.nameSpace;\n    var beanClass = it.entity.env.base.codeRoot;\n    var beanVarName = beanClass.charAt(0).toLowerCase()+beanClass.slice(1);\n    var serviceClass = beanClass+'Service';\n    var serviceVarName= beanVarName+'Service';\n    \n}}package {{=pkgName}}.entity;\n$blankline\nimport io.swagger.annotations.ApiModel;\nimport io.swagger.annotations.ApiModelProperty;\nimport com.baomidou.mybatisplus.annotation.TableName;\nimport com.baomidou.mybatisplus.annotation.TableId;\nimport java.io.Serializable;\nimport java.util.Date;\n$blankline\n\n /**\n * {{=it.entity.defName}};{{=it.entity.comment}}\n * @author : http://www.chiner.pro\n * @date : {{=fullYear}}-{{=month}}-{{=days}}\n */\n@ApiModel(value = \"{{=it.entity.defName}}\",description = \"{{=it.entity.comment}}\")\n@TableName(\"{{=it.entity.defKey}}\")\npublic class {{=beanClass}} implements Serializable,Cloneable{\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    @ApiModelProperty(name = \"{{=field.defName}}\",notes = \"{{=field.comment}}\")\n    {{? field.primaryKey }}\n    @TableId\n    {{?}}\n    private {{=field.type}} {{=it.func.camel(field.defKey,false)}} ;\n{{~}}\n$blankline\n\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    public {{=field.type}} get{{=it.func.camel(field.defKey,true)}}(){\n        return this.{{=it.func.camel(field.defKey,false)}};\n    }\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    public void set{{=it.func.camel(field.defKey,true)}}({{=field.type}} {{= it.func.camel(field.defKey,false) }}){\n        this.{{=it.func.camel(field.defKey,false)}}={{=it.func.camel(field.defKey,false)}};\n    }\n{{~}}\n}"
+          "Entity": "{{  var today=new Date();\n    var fullYear=today.getFullYear();\n    var month=today.getMonth() + 1;\n    var days=today.getDate();\n    \n    var pkVarName = \"undefinedId\";\n    var pkDataType = \"String\";\n    it.entity.fields.forEach(function(field){\n        if(field.primaryKey){\n            pkVarName = it.func.camel(field.defKey,false);\n            pkDataType = field[\"type\"];\n            return;\n        }\n    });\n    \n    var pkgName = it.entity.env.base.nameSpace;\n    var beanClass = it.entity.env.base.codeRoot;\n    var beanVarName = beanClass.charAt(0).toLowerCase()+beanClass.slice(1);\n    var serviceClass = beanClass+'Service';\n    var serviceVarName= beanVarName+'Service';\n    \n}}\n$blankline\nimport io.swagger.annotations.ApiModel;\nimport io.swagger.annotations.ApiModelProperty;\nimport com.baomidou.mybatisplus.annotation.TableName;\nimport com.baomidou.mybatisplus.annotation.TableId;\nimport java.util.Date;\nimport lombok.Data;\n$blankline\n\n\n@ApiModel(value = \"{{=it.entity.defName}}\",description = \"{{=it.entity.comment}}\")\n@Data\n@TableName(\"{{=it.entity.defKey}}\")\npublic class {{=beanClass}}{\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    @ApiModelProperty(name = \"{{=field.defName}}\",notes = \"{{=field.comment}}\")\n    {{? field.primaryKey }}\n    @TableId\n    {{?}}\n    private {{=field.type}} {{=it.func.camel(field.defKey,false)}} ;\n{{~}}\n$blankline}\n"
         },
         {
           "applyFor": "29D1CE08-4C35-4D2D-AAA9-23D93305B52E",
@@ -439,7 +439,8 @@
           "hideInGraph": true
         }
       ],
-      "menuWidth": ""
+      "menuWidth": "",
+      "modelType": "modalAll"
     },
     "entities": [
       {
@@ -551,7 +552,7 @@
             "defKey": "create_time",
             "defName": "创建时间",
             "comment": "创建时间",
-            "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
             "type": "",
             "len": "",
             "scale": "",
@@ -568,7 +569,7 @@
             "defKey": "update_time",
             "defName": "更新时间",
             "comment": "更新时间",
-            "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
             "type": "",
             "len": "",
             "scale": "",
@@ -779,7 +780,7 @@
             "defKey": "create_time",
             "defName": "创建时间",
             "comment": "创建时间",
-            "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
             "type": "",
             "len": "",
             "scale": "",
@@ -796,7 +797,7 @@
             "defKey": "update_time",
             "defName": "更新时间",
             "comment": "更新时间",
-            "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
             "type": "",
             "len": "",
             "scale": "",
@@ -973,7 +974,7 @@
             "defKey": "create_time",
             "defName": "创建时间",
             "comment": "创建时间",
-            "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
             "type": "",
             "len": "",
             "scale": "",
@@ -990,7 +991,7 @@
             "defKey": "update_time",
             "defName": "更新时间",
             "comment": "更新时间",
-            "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
             "type": "",
             "len": "",
             "scale": "",
@@ -1106,7 +1107,7 @@
             "id": "9614EC96-AF13-4B49-A6D1-38FCF17EB011"
           },
           {
-            "defKey": "time",
+            "defKey": "finish_time",
             "defName": "完结时间",
             "comment": "",
             "type": "",
@@ -1121,6 +1122,40 @@
             "extProps": {},
             "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
             "id": "7DF354A0-EF2C-4E5D-ABEA-E358CAD25491"
+          },
+          {
+            "defKey": "upload_time",
+            "defName": "上传时间",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": true,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+            "id": "69097949-B22E-40F9-B4AA-727CCB19BD13"
+          },
+          {
+            "defKey": "upload_user_id",
+            "defName": "上传用户",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": true,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "16120F75-6AA7-4483-868D-F07F511BB081",
+            "id": "F7DC8FCE-B028-4F2D-BCD0-A78520D4C0D7"
           },
           {
             "defKey": "information",
@@ -1138,6 +1173,40 @@
             "extProps": {},
             "domain": "4BB5F2AC-6CE0-41F6-BDAE-EB4E4DADB077",
             "id": "129F2AF3-BFFB-49F2-AF66-2E05C84DA07E"
+          },
+          {
+            "defKey": "file_size",
+            "defName": "小说大小",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": true,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "97B646DC-6037-4DE9-9149-CECBEF476274",
+            "id": "8F55FB32-7C34-4867-A0EF-6FFE03E39B6E"
+          },
+          {
+            "defKey": "file_path",
+            "defName": "文件路径",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": true,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "B72DB88F-18E9-49F4-B469-A1CAC14B056E",
+            "id": "9566FAB7-6F4E-4D3D-A2C2-0C0B486E48F8"
           },
           {
             "defKey": "tag",
@@ -1286,7 +1355,7 @@
             "defKey": "create_time",
             "defName": "创建时间",
             "comment": "创建时间",
-            "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
             "type": "",
             "len": "",
             "scale": "",
@@ -1303,7 +1372,7 @@
             "defKey": "update_time",
             "defName": "更新时间",
             "comment": "更新时间",
-            "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
             "type": "",
             "len": "",
             "scale": "",
@@ -1480,7 +1549,7 @@
             "defKey": "create_time",
             "defName": "创建时间",
             "comment": "创建时间",
-            "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
             "type": "",
             "len": "",
             "scale": "",
@@ -1497,7 +1566,7 @@
             "defKey": "update_time",
             "defName": "更新时间",
             "comment": "更新时间",
-            "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
             "type": "",
             "len": "",
             "scale": "",
@@ -2105,19 +2174,18 @@
           "defName": "大整数",
           "id": "42684F01-597D-485D-A342-1172FB1A35CD",
           "29D1CE08-4C35-4D2D-AAA9-23D93305B52E": "bigint",
-          "797A1496-D649-4261-89B4-544132EC3F36": "BigInteger"
-        },
-        {
-          "defKey": "timestamp",
-          "defName": "时间戳",
-          "id": "F97F02A4-4D3F-4D82-9578-FCBDF0A2F9F7",
-          "29D1CE08-4C35-4D2D-AAA9-23D93305B52E": "timestamp"
+          "797A1496-D649-4261-89B4-544132EC3F36": "Long",
+          "895CFD1D-4273-4D32-A2C4-CAC70200AB5B": "Long",
+          "A2EE7B4A-CE62-4290-B00C-B26C1BF18073": "Long"
         },
         {
           "defKey": "tinyint",
           "defName": "小整数",
           "id": "3C848FBE-01FD-4512-A411-1AB3A37917A6",
-          "29D1CE08-4C35-4D2D-AAA9-23D93305B52E": "tinyint"
+          "29D1CE08-4C35-4D2D-AAA9-23D93305B52E": "tinyint",
+          "797A1496-D649-4261-89B4-544132EC3F36": "int",
+          "A2EE7B4A-CE62-4290-B00C-B26C1BF18073": "int",
+          "895CFD1D-4273-4D32-A2C4-CAC70200AB5B": "int"
         }
       ]
     },
@@ -2148,15 +2216,6 @@
         "scale": "",
         "uiHint": "",
         "id": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC"
-      },
-      {
-        "defKey": "TimeStamp",
-        "defName": "时间戳",
-        "applyFor": "F97F02A4-4D3F-4D82-9578-FCBDF0A2F9F7",
-        "len": "",
-        "scale": "",
-        "uiHint": "",
-        "id": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1"
       },
       {
         "defKey": "String-10",

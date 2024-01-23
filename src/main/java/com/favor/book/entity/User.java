@@ -6,7 +6,10 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 
@@ -20,40 +23,32 @@ import java.util.Date;
  * 默认生成字段解决方式：<a href="https://blog.csdn.net/harryshumxu/article/details/128716338">...</a>
  * 7.DynamicUpdate（默认为true）：如果在实体类上使用此注解，表示update对象的时候,生成动态的update语句,参考：<a href="https://blog.csdn.net/weixin_42126028/article/details/107548733">...</a>
  * 它的作用并不是更新指定字段，而是更新变化的字段;如果对象中某个属性为null，当执行更新操作时，如果这个字段在数据库中已经有值了当然会被null覆盖, 因为你save()的对象中这个字段跟数据库中的值不同。如果你更新的字段和数据库中的值相同则不更新该字段，解决方法是先把要更新的数据查询出来，查出原有值再把想变化的字段改变一下，再使用save()保存即可。
- * 使用后会貌似强制要求create_time的数据库字段类型为datetime而不是timestamp？
+ * 使用后会貌似强制要求create_time的数据库字段类型为datetime而不是timestamp，不然会视为新的datetime类型字段添加到数据库中
  * @author Administrator
  */
-@ApiModel(value = "用户信息",description = "")
 @Data
 @Entity
 @DynamicInsert
 @DynamicUpdate
+@ApiModel(value = "用户信息", description = "")
 @Table(name = "user")
 public class User{
-    /** 主键;自增主键 */
-    @ApiModelProperty(name = "主键",notes = "自增主键")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @ApiModelProperty(name = "主键",notes = "自增主键")
     private Long id ;
-    /** 创建时间;创建时间 */
     @ApiModelProperty(name = "创建时间",notes = "创建时间")
     private Date createTime ;
-    /** 更新时间;更新时间 */
     @ApiModelProperty(name = "更新时间",notes = "更新时间")
     private Date updateTime ;
-    /** 是否删除;是否删除 */
     @ApiModelProperty(name = "是否删除",notes = "是否删除")
     private int isDeleted ;
-    /** 账号 */
     @ApiModelProperty(name = "账号",notes = "")
     private String account ;
-    /** 密码 */
     @ApiModelProperty(name = "密码",notes = "")
     private String password ;
-    /** 用户名 */
     @ApiModelProperty(name = "用户名",notes = "")
     private String name ;
-    /** 简介 */
     @ApiModelProperty(name = "简介",notes = "")
     private String information ;
 }

@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.2.1",
   "createdTime": "2024-1-17 15:56:53",
-  "updatedTime": "2024-1-19 15:55:07",
+  "updatedTime": "2024-1-23 16:01:38",
   "dbConns": [],
   "profile": {
     "default": {
@@ -167,7 +167,7 @@
       {
         "type": "appCode",
         "applyFor": "797A1496-D649-4261-89B4-544132EC3F36",
-        " JpaBean": "{{  var today=new Date();\n    var fullYear=today.getFullYear();\n    var month=today.getMonth() + 1;\n    var days=today.getDate();\n    \n    var pkVarName = \"undefinedId\";\n    var pkDataType = \"String\";\n    it.entity.fields.forEach(function(field){\n        if(field.primaryKey){\n            pkVarName = it.func.camel(field.defKey,false);\n            pkDataType = field[\"type\"];\n            return;\n        }\n    });\n    \n    var pkgName = it.entity.env.base.nameSpace;\n    var beanClass = it.entity.env.base.codeRoot;\n    var beanVarName = beanClass.charAt(0).toLowerCase()+beanClass.slice(1);\n    var serviceClass = beanClass+'Service';\n    var serviceVarName= beanVarName+'Service';\n    \n}}package {{=pkgName}}.entity;\n$blankline\nimport io.swagger.annotations.ApiModel;\nimport io.swagger.annotations.ApiModelProperty;\nimport javax.persistence.*;\nimport java.io.Serializable;\nimport java.util.Date;\n$blankline\n\n /**\n * {{=it.entity.defName}};{{=it.entity.comment}}\n * @author : http://www.chiner.pro\n * @date : {{=fullYear}}-{{=month}}-{{=days}}\n */\n@ApiModel(value = \"{{=it.entity.defName}}\",description = \"{{=it.entity.comment}}\")\n@Table(name=\"{{=it.entity.defKey}}\")\npublic class {{=beanClass}} implements Serializable,Cloneable{\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    {{? field.primaryKey }}\n    @Id\n    @GeneratedValue\n    {{?}}\n    @ApiModelProperty(name = \"{{=field.defName}}\",notes = \"{{=field.comment}}\")\n    private {{=field.type}} {{=it.func.camel(field.defKey,false)}} ;\n{{~}}\n$blankline\n\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    public {{=field.type}} get{{=it.func.camel(field.defKey,true)}}(){\n        return this.{{=it.func.camel(field.defKey,false)}};\n    }\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    public void set{{=it.func.camel(field.defKey,true)}}({{=field.type}} {{= it.func.camel(field.defKey,false) }}){\n        this.{{=it.func.camel(field.defKey,false)}}={{=it.func.camel(field.defKey,false)}};\n    }\n{{~}}\n}"
+        " JpaBean": "{{  var today=new Date();\n    var fullYear=today.getFullYear();\n    var month=today.getMonth() + 1;\n    var days=today.getDate();\n    \n    var pkVarName = \"undefinedId\";\n    var pkDataType = \"String\";\n    it.entity.fields.forEach(function(field){\n        if(field.primaryKey){\n            pkVarName = it.func.camel(field.defKey,false);\n            pkDataType = field[\"type\"];\n            return;\n        }\n    });\n    \n    var pkgName = it.entity.env.base.nameSpace;\n    var beanClass = it.entity.env.base.codeRoot;\n    var beanVarName = beanClass.charAt(0).toLowerCase()+beanClass.slice(1);\n    var serviceClass = beanClass+'Service';\n    var serviceVarName= beanVarName+'Service';\n    \n}}\n$blankline\nimport io.swagger.annotations.ApiModel;\nimport io.swagger.annotations.ApiModelProperty;\nimport lombok.Data;\nimport org.hibernate.annotations.DynamicInsert;\nimport org.hibernate.annotations.DynamicUpdate;\n\nimport javax.persistence.*;\nimport java.util.Date;\n$blankline\n\n@Data\n@Entity\n@DynamicInsert\n@DynamicUpdate\n@ApiModel(value = \"{{=it.entity.defName}}\",description = \"{{=it.entity.comment}}\")\n@Table(name=\"{{=it.entity.defKey}}\")\npublic class {{=beanClass}}{\n{{~it.entity.fields:field:index}}\n\n    {{? field.primaryKey }}\n    @Id\n    @GeneratedValue\n    {{?}}\n    @ApiModelProperty(name = \"{{=field.defName}}\",notes = \"{{=field.comment}}\")\n    private {{=field.type}} {{=it.func.camel(field.defKey,false)}} ;\n{{~}}\n}"
       },
       {
         "type": "appCode",
@@ -435,7 +435,8 @@
         "hideInGraph": true
       }
     ],
-    "menuWidth": ""
+    "menuWidth": "",
+    "modelType": "modalAll"
   },
   "entities": [
     {
@@ -547,7 +548,7 @@
           "defKey": "create_time",
           "defName": "创建时间",
           "comment": "创建时间",
-          "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "type": "",
           "len": "",
           "scale": "",
@@ -564,7 +565,7 @@
           "defKey": "update_time",
           "defName": "更新时间",
           "comment": "更新时间",
-          "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "type": "",
           "len": "",
           "scale": "",
@@ -775,7 +776,7 @@
           "defKey": "create_time",
           "defName": "创建时间",
           "comment": "创建时间",
-          "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "type": "",
           "len": "",
           "scale": "",
@@ -792,7 +793,7 @@
           "defKey": "update_time",
           "defName": "更新时间",
           "comment": "更新时间",
-          "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "type": "",
           "len": "",
           "scale": "",
@@ -969,7 +970,7 @@
           "defKey": "create_time",
           "defName": "创建时间",
           "comment": "创建时间",
-          "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "type": "",
           "len": "",
           "scale": "",
@@ -986,7 +987,7 @@
           "defKey": "update_time",
           "defName": "更新时间",
           "comment": "更新时间",
-          "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "type": "",
           "len": "",
           "scale": "",
@@ -1350,7 +1351,7 @@
           "defKey": "create_time",
           "defName": "创建时间",
           "comment": "创建时间",
-          "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "type": "",
           "len": "",
           "scale": "",
@@ -1367,7 +1368,7 @@
           "defKey": "update_time",
           "defName": "更新时间",
           "comment": "更新时间",
-          "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "type": "",
           "len": "",
           "scale": "",
@@ -1544,7 +1545,7 @@
           "defKey": "create_time",
           "defName": "创建时间",
           "comment": "创建时间",
-          "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "type": "",
           "len": "",
           "scale": "",
@@ -1561,7 +1562,7 @@
           "defKey": "update_time",
           "defName": "更新时间",
           "comment": "更新时间",
-          "domain": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "type": "",
           "len": "",
           "scale": "",
@@ -2174,15 +2175,6 @@
         "A2EE7B4A-CE62-4290-B00C-B26C1BF18073": "Long"
       },
       {
-        "defKey": "timestamp",
-        "defName": "时间戳",
-        "id": "F97F02A4-4D3F-4D82-9578-FCBDF0A2F9F7",
-        "29D1CE08-4C35-4D2D-AAA9-23D93305B52E": "timestamp",
-        "895CFD1D-4273-4D32-A2C4-CAC70200AB5B": "Date",
-        "A2EE7B4A-CE62-4290-B00C-B26C1BF18073": "Date",
-        "797A1496-D649-4261-89B4-544132EC3F36": "Date"
-      },
-      {
         "defKey": "tinyint",
         "defName": "小整数",
         "id": "3C848FBE-01FD-4512-A411-1AB3A37917A6",
@@ -2220,15 +2212,6 @@
       "scale": "",
       "uiHint": "",
       "id": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC"
-    },
-    {
-      "defKey": "TimeStamp",
-      "defName": "时间戳",
-      "applyFor": "F97F02A4-4D3F-4D82-9578-FCBDF0A2F9F7",
-      "len": "",
-      "scale": "",
-      "uiHint": "",
-      "id": "25A84485-2EEA-45A9-9A42-D5EB744FFDB1"
     },
     {
       "defKey": "String-10",

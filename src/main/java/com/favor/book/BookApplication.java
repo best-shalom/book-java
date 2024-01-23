@@ -1,7 +1,6 @@
 package com.favor.book;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
@@ -17,7 +16,7 @@ import javax.servlet.MultipartConfigElement;
  * @author Administrator
  */
 @SpringBootApplication
-@MapperScan("com.favor.book.dao")
+// @MapperScan("com.favor.book.dao")
 public class BookApplication {
     /**
      * 可以看到，我们只在 pom.xml 中引入了一个 Web 的 Starter，然后创建一个普通的 Java 类，一个 Main 方法就可以启动一个 Web 项目。

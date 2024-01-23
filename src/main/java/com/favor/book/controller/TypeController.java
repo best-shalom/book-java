@@ -3,11 +3,11 @@ package com.favor.book.controller;
 import com.favor.book.common.Result;
 import com.favor.book.entity.Type;
 import com.favor.book.service.TypeService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Administrator
@@ -20,12 +20,12 @@ public class TypeController {
     private TypeService typeService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<Type> getAllTypes() {
+    public Result getAllTypes() {
         return typeService.getAllTypes();
     }
 
     @RequestMapping(value = "/getById", method = RequestMethod.POST)
-    public Optional<Type> getTypeById(Long id) {
+    public Result getTypeById(Long id) {
         return typeService.getTypeById(id);
     }
 

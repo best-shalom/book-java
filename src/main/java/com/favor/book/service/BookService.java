@@ -48,7 +48,7 @@ public class BookService {
         book.setAuthorId(1L);
         book.setClassifyId(1L);
         book.setTypeId(1L);
-        book.setTime(new Date());
+        book.setUploadTime(new Date());
         book.setInformation("1");
         bookRepository.save(book);
         return Result.success("书籍保存数据库成功");

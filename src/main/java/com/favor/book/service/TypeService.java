@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,12 +18,12 @@ public class TypeService {
     @Resource
     private TypeRepository typeRepository;
 
-    public List<Type> getAllTypes() {
-        return typeRepository.findAll();
+    public Result getAllTypes() {
+        return Result.success(typeRepository.findAll());
     }
 
-    public Optional<Type> getTypeById(Long id) {
-        return typeRepository.findById(id);
+    public Result getTypeById(Long id) {
+        return Result.success(typeRepository.findById(id));
     }
 
     public Result addType(Type type) {

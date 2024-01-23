@@ -6,38 +6,35 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * ApiModel注解是用在接口相关的实体类上的注解，它主要是用来对使用该注解的接口相关的实体类添加额外的描述信息，常常和@ApiModelProperty注解配合使用
  * @author Administrator
  */
-@ApiModel(value = "分组类型",description = "")
 @Data
 @Entity
 @DynamicInsert
 @DynamicUpdate
+@ApiModel(value = "分组类型", description = "")
 @Table(name="classify")
 public class Classify{
-    /** 主键;自增主键 */
-    @ApiModelProperty(name = "主键",notes = "自增主键")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @ApiModelProperty(name = "主键",notes = "自增主键")
     private Long id ;
-    /** 创建时间;创建时间 */
     @ApiModelProperty(name = "创建时间",notes = "创建时间")
     private Date createTime ;
-    /** 更新时间;更新时间 */
     @ApiModelProperty(name = "更新时间",notes = "更新时间")
     private Date updateTime ;
-    /** 是否删除;是否删除 */
     @ApiModelProperty(name = "是否删除",notes = "是否删除")
     private int isDeleted ;
-    /** 分组名 */
     @ApiModelProperty(name = "分组名",notes = "")
     private String name ;
-    /** 分组简介 */
     @ApiModelProperty(name = "分组简介",notes = "")
     private String information ;
 }
