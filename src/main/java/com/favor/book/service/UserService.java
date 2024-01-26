@@ -49,6 +49,8 @@ public class UserService {
             return Result.error("用户已存在");
         }
         user=new User();
+        // 账号作为默认用户名
+        user.setName(account);
         user.setAccount(account);
         user.setPassword(password);
         // insert的返回结果为数据库表改变的条数
