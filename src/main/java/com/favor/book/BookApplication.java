@@ -11,6 +11,9 @@ import javax.servlet.MultipartConfigElement;
 
 /**
  * 1.SpringBootApplication注解，这个注解表示该类是一个 Spring Boot 应用。
+ * 它是一个组合注解，它包含了 @SpringBootConfiguration、@EnableAutoConfiguration 和 @ComponentScan 这三个注解。
+ * 其中，@ComponentScan 默认会扫描主应用程序类所在的包及其子包中的组件，并将其注册为 Spring Bean。
+ * </p>
  * 2.MapperScan注解，扫描Mapper所在的文件夹
  * 直接运行 BookApplication 类即可启动，启动成功后在控制台输出信息，默认端口是 8080
  * @author Administrator

@@ -6,6 +6,7 @@ import com.favor.book.service.BookService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -39,6 +41,18 @@ public class BookController {
     @ResponseBody
     public Result downloadOneBook(Long id, String savePath) {
         return bookService.downloadOneBook(id, savePath);
+    }
+
+    /**
+     * 注解@RequestBody:表示要从请求的主体中获取数据
+     *
+     * @param json python爬虫获取的json格式的书籍信息
+     * @return 返回添加结果
+     */
+    @RequestMapping(value = "/addOneBookInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Result addOneBookInfo(@RequestBody Map<String, Object> json) {
+        return bookService.addOneBookInfo(json);
     }
 
     /**

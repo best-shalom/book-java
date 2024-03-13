@@ -1,5 +1,6 @@
 package com.favor.book.entity;
 
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -31,25 +32,23 @@ public class Book{
     private int isDeleted ;
     @ApiModelProperty(name = "书名",notes = "")
     private String newName;
-    @ApiModelProperty(name = "文件名", notes = "")
-    private String oldName;
-    @ApiModelProperty(name = "小说主角",notes = "")
-    private String characterName ;
     @ApiModelProperty(name = "小说作者",notes = "")
     private Long authorId ;
-    @ApiModelProperty(name = "小说类型",notes = "")
-    private Long classifyId ;
     @ApiModelProperty(name = "阅读类型",notes = "比如是否感兴趣、已经看完、值得回看、不好看等等")
     private Long typeId ;
+    @ApiModelProperty(name = "文件名", notes = "")
+    private String oldName;
+    @ApiModelProperty(name = "小说主角", notes = "")
+    private String characterName;
     @ApiModelProperty(name = "完结时间",notes = "")
     private Date finishTime;
     @ApiModelProperty(name = "上传时间", notes = "")
     private Date uploadTime;
     @ApiModelProperty(name = "上传用户", notes = "")
     private Long uploadUserId;
-    @ApiModelProperty(name = "小说简介",notes = "")
+    @ApiModelProperty(name = "书籍简介", notes = "")
     private String information ;
-    @ApiModelProperty(name = "小说大小", notes = "")
+    @ApiModelProperty(name = "书籍大小", notes = "")
     private String fileSize;
     @ApiModelProperty(name = "文件路径", notes = "")
     private String filePath;
@@ -57,4 +56,10 @@ public class Book{
     private String tag ;
     @ApiModelProperty(name = "我的评价",notes = "")
     private String evaluate ;
+    @ApiModelProperty(name = "书籍星级", notes = "")
+    private String star;
+    @ApiModelProperty(name = "书籍链接", notes = "")
+    private String bookUrl;
+    @ApiModelProperty(name = "下载链接", notes = "")
+    private String downUrl;
 }

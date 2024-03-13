@@ -1,14 +1,14 @@
 {
   "name": "v1.0.0",
-  "desc": "初始化",
-  "date": 1705995352861,
+  "desc": "1",
+  "date": 1710299434448,
   "data": {
     "name": "book",
     "describe": "book的数据库模型",
     "avatar": "",
     "version": "4.2.1",
     "createdTime": "2024-1-17 15:56:53",
-    "updatedTime": "2024-1-23 15:31:58",
+    "updatedTime": "2024-3-13 11:09:20",
     "dbConns": [],
     "profile": {
       "default": {
@@ -171,7 +171,7 @@
         {
           "type": "appCode",
           "applyFor": "797A1496-D649-4261-89B4-544132EC3F36",
-          " JpaBean": "{{  var today=new Date();\n    var fullYear=today.getFullYear();\n    var month=today.getMonth() + 1;\n    var days=today.getDate();\n    \n    var pkVarName = \"undefinedId\";\n    var pkDataType = \"String\";\n    it.entity.fields.forEach(function(field){\n        if(field.primaryKey){\n            pkVarName = it.func.camel(field.defKey,false);\n            pkDataType = field[\"type\"];\n            return;\n        }\n    });\n    \n    var pkgName = it.entity.env.base.nameSpace;\n    var beanClass = it.entity.env.base.codeRoot;\n    var beanVarName = beanClass.charAt(0).toLowerCase()+beanClass.slice(1);\n    var serviceClass = beanClass+'Service';\n    var serviceVarName= beanVarName+'Service';\n    \n}}package {{=pkgName}}.entity;\n$blankline\nimport io.swagger.annotations.ApiModel;\nimport io.swagger.annotations.ApiModelProperty;\nimport javax.persistence.*;\nimport java.io.Serializable;\nimport java.util.Date;\n$blankline\n\n /**\n * {{=it.entity.defName}};{{=it.entity.comment}}\n * @author : http://www.chiner.pro\n * @date : {{=fullYear}}-{{=month}}-{{=days}}\n */\n@ApiModel(value = \"{{=it.entity.defName}}\",description = \"{{=it.entity.comment}}\")\n@Table(name=\"{{=it.entity.defKey}}\")\npublic class {{=beanClass}} implements Serializable,Cloneable{\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    {{? field.primaryKey }}\n    @Id\n    @GeneratedValue\n    {{?}}\n    @ApiModelProperty(name = \"{{=field.defName}}\",notes = \"{{=field.comment}}\")\n    private {{=field.type}} {{=it.func.camel(field.defKey,false)}} ;\n{{~}}\n$blankline\n\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    public {{=field.type}} get{{=it.func.camel(field.defKey,true)}}(){\n        return this.{{=it.func.camel(field.defKey,false)}};\n    }\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    public void set{{=it.func.camel(field.defKey,true)}}({{=field.type}} {{= it.func.camel(field.defKey,false) }}){\n        this.{{=it.func.camel(field.defKey,false)}}={{=it.func.camel(field.defKey,false)}};\n    }\n{{~}}\n}"
+          " JpaBean": "{{  var today=new Date();\n    var fullYear=today.getFullYear();\n    var month=today.getMonth() + 1;\n    var days=today.getDate();\n    \n    var pkVarName = \"undefinedId\";\n    var pkDataType = \"String\";\n    it.entity.fields.forEach(function(field){\n        if(field.primaryKey){\n            pkVarName = it.func.camel(field.defKey,false);\n            pkDataType = field[\"type\"];\n            return;\n        }\n    });\n    \n    var pkgName = it.entity.env.base.nameSpace;\n    var beanClass = it.entity.env.base.codeRoot;\n    var beanVarName = beanClass.charAt(0).toLowerCase()+beanClass.slice(1);\n    var serviceClass = beanClass+'Service';\n    var serviceVarName= beanVarName+'Service';\n    \n}}\n$blankline\nimport io.swagger.annotations.ApiModel;\nimport io.swagger.annotations.ApiModelProperty;\nimport lombok.Data;\nimport org.hibernate.annotations.DynamicInsert;\nimport org.hibernate.annotations.DynamicUpdate;\n\nimport javax.persistence.Entity;\nimport javax.persistence.GeneratedValue;\nimport javax.persistence.Id;\nimport javax.persistence.Table;\nimport java.util.Date;\n$blankline\n\n@Data\n@Entity\n@DynamicInsert\n@DynamicUpdate\n@ApiModel(value = \"{{=it.entity.defName}}\",description = \"{{=it.entity.comment}}\")\n@Table(name=\"{{=it.entity.defKey}}\")\npublic class {{=beanClass}}{\n{{~it.entity.fields:field:index}}\n\n    {{? field.primaryKey }}\n    @Id\n    @GeneratedValue\n    {{?}}\n    @ApiModelProperty(name = \"{{=field.defName}}\",notes = \"{{=field.comment}}\")\n    private {{=field.type}} {{=it.func.camel(field.defKey,false)}} ;\n{{~}}\n}"
         },
         {
           "type": "appCode",
@@ -319,7 +319,7 @@
       "generatorDoc": {
         "docTemplate": ""
       },
-      "relationFieldSize": "15",
+      "relationFieldSize": 25,
       "uiHint": [
         {
           "defKey": "Input",
@@ -680,7 +680,7 @@
           }
         },
         "defKey": "classify",
-        "defName": "分组类型",
+        "defName": "书籍标签",
         "comment": "",
         "properties": {
           "partitioned by": "(date string)",
@@ -829,7 +829,7 @@
           },
           {
             "defKey": "name",
-            "defName": "分组名",
+            "defName": "标签名",
             "comment": "",
             "type": "",
             "len": "",
@@ -846,7 +846,7 @@
           },
           {
             "defKey": "information",
-            "defName": "分组简介",
+            "defName": "标签简介",
             "comment": "",
             "type": "",
             "len": "",
@@ -860,6 +860,23 @@
             "extProps": {},
             "domain": "70E08FCF-00C8-410B-9E4D-A58360271823",
             "id": "A6E85D11-0135-47E1-BD88-EBB51D9E7C87"
+          },
+          {
+            "defKey": "url",
+            "defName": "标签链接",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": false,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "B72DB88F-18E9-49F4-B469-A1CAC14B056E",
+            "id": "C91B0FE6-1E95-4E48-94E7-E5E2D8BB9DE1"
           }
         ],
         "correlations": [],
@@ -1022,7 +1039,7 @@
             "id": "C9C1BFD9-3815-4468-82F6-40397596CE8C"
           },
           {
-            "defKey": "name",
+            "defKey": "new_name",
             "defName": "书名",
             "comment": "",
             "type": "",
@@ -1037,23 +1054,6 @@
             "extProps": {},
             "domain": "97B646DC-6037-4DE9-9149-CECBEF476274",
             "id": "99F35B1C-951A-4D1A-8239-F65B51361C7E"
-          },
-          {
-            "defKey": "character_name",
-            "defName": "小说主角",
-            "comment": "",
-            "type": "",
-            "len": "",
-            "scale": "",
-            "primaryKey": false,
-            "notNull": true,
-            "autoIncrement": false,
-            "defaultValue": "",
-            "hideInGraph": false,
-            "refDict": "",
-            "extProps": {},
-            "domain": "97B646DC-6037-4DE9-9149-CECBEF476274",
-            "id": "BB9762E7-FE13-4FDD-9CF7-46D76DFB9012"
           },
           {
             "defKey": "author_id",
@@ -1073,23 +1073,6 @@
             "id": "D50873D3-93FF-4A22-9966-DA399FE2BF51"
           },
           {
-            "defKey": "classify_id",
-            "defName": "小说类型",
-            "comment": "",
-            "type": "",
-            "len": "",
-            "scale": "",
-            "primaryKey": false,
-            "notNull": true,
-            "autoIncrement": false,
-            "defaultValue": "",
-            "hideInGraph": false,
-            "refDict": "",
-            "extProps": {},
-            "domain": "16120F75-6AA7-4483-868D-F07F511BB081",
-            "id": "DEE6940D-1AC1-4A3F-B75A-A7CB616D9E1B"
-          },
-          {
             "defKey": "type_id",
             "defName": "阅读类型",
             "comment": "比如是否感兴趣、已经看完、值得回看、不好看等等",
@@ -1097,7 +1080,7 @@
             "len": "",
             "scale": "",
             "primaryKey": false,
-            "notNull": true,
+            "notNull": false,
             "autoIncrement": false,
             "defaultValue": "",
             "hideInGraph": false,
@@ -1107,6 +1090,40 @@
             "id": "9614EC96-AF13-4B49-A6D1-38FCF17EB011"
           },
           {
+            "defKey": "old_name",
+            "defName": "文件名",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": false,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "97B646DC-6037-4DE9-9149-CECBEF476274",
+            "id": "C67BEE63-426F-4E8B-AB6E-7BD6B2F9FFF6"
+          },
+          {
+            "defKey": "character_name",
+            "defName": "小说主角",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": false,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "97B646DC-6037-4DE9-9149-CECBEF476274",
+            "id": "BB9762E7-FE13-4FDD-9CF7-46D76DFB9012"
+          },
+          {
             "defKey": "finish_time",
             "defName": "完结时间",
             "comment": "",
@@ -1114,7 +1131,7 @@
             "len": "",
             "scale": "",
             "primaryKey": false,
-            "notNull": true,
+            "notNull": false,
             "autoIncrement": false,
             "defaultValue": "",
             "hideInGraph": false,
@@ -1131,7 +1148,7 @@
             "len": "",
             "scale": "",
             "primaryKey": false,
-            "notNull": true,
+            "notNull": false,
             "autoIncrement": false,
             "defaultValue": "",
             "hideInGraph": false,
@@ -1148,7 +1165,7 @@
             "len": "",
             "scale": "",
             "primaryKey": false,
-            "notNull": true,
+            "notNull": false,
             "autoIncrement": false,
             "defaultValue": "",
             "hideInGraph": false,
@@ -1159,13 +1176,13 @@
           },
           {
             "defKey": "information",
-            "defName": "小说简介",
+            "defName": "书籍简介",
             "comment": "",
             "type": "",
             "len": "",
             "scale": "",
             "primaryKey": false,
-            "notNull": true,
+            "notNull": false,
             "autoIncrement": false,
             "defaultValue": "",
             "hideInGraph": false,
@@ -1176,13 +1193,13 @@
           },
           {
             "defKey": "file_size",
-            "defName": "小说大小",
+            "defName": "书籍大小",
             "comment": "",
             "type": "",
             "len": "",
             "scale": "",
             "primaryKey": false,
-            "notNull": true,
+            "notNull": false,
             "autoIncrement": false,
             "defaultValue": "",
             "hideInGraph": false,
@@ -1199,7 +1216,7 @@
             "len": "",
             "scale": "",
             "primaryKey": false,
-            "notNull": true,
+            "notNull": false,
             "autoIncrement": false,
             "defaultValue": "",
             "hideInGraph": false,
@@ -1241,6 +1258,57 @@
             "extProps": {},
             "domain": "4BB5F2AC-6CE0-41F6-BDAE-EB4E4DADB077",
             "id": "34D7A4E5-6AC5-43AB-BB62-6AF07C3844DF"
+          },
+          {
+            "defKey": "star",
+            "defName": "书籍星级",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": false,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "3D9CE172-93D3-45D7-828D-119CF2F27E4E",
+            "id": "1902BB19-F5E4-4639-838E-0C48EA12F204"
+          },
+          {
+            "defKey": "book_url",
+            "defName": "书籍链接",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": false,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "B72DB88F-18E9-49F4-B469-A1CAC14B056E",
+            "id": "1DDCA1EB-1B8A-4B38-A33D-2077D3ED9444"
+          },
+          {
+            "defKey": "down_url",
+            "defName": "下载链接",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": false,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "B72DB88F-18E9-49F4-B469-A1CAC14B056E",
+            "id": "5CD7ED8E-3EC2-403D-9F89-B826948E21F1"
           }
         ],
         "correlations": [],
@@ -1435,6 +1503,40 @@
             "extProps": {},
             "domain": "70E08FCF-00C8-410B-9E4D-A58360271823",
             "id": "E1779055-0756-4A79-AB45-BCEEFD8E5076"
+          },
+          {
+            "defKey": "url",
+            "defName": "作者链接",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": false,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "B72DB88F-18E9-49F4-B469-A1CAC14B056E",
+            "id": "613BA9EB-5767-498A-8917-7F6629B87485"
+          },
+          {
+            "defKey": "title",
+            "defName": "作者合集",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": false,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "97B646DC-6037-4DE9-9149-CECBEF476274",
+            "id": "30A3601F-E607-47A2-AA63-34195C54AF55"
           }
         ],
         "correlations": [],
@@ -1629,6 +1731,200 @@
             "extProps": {},
             "domain": "70E08FCF-00C8-410B-9E4D-A58360271823",
             "id": "14B41CFC-25FD-4EB2-8121-F0BE27F9E5F0"
+          }
+        ],
+        "correlations": [],
+        "indexes": []
+      },
+      {
+        "id": "902D6B60-E3ED-4900-A3EB-C8CC3EE67471",
+        "env": {
+          "base": {
+            "nameSpace": "",
+            "codeRoot": ""
+          }
+        },
+        "defKey": "book_classify",
+        "defName": "书籍分组关联",
+        "comment": "",
+        "properties": {
+          "partitioned by": "(date string)",
+          "row format delimited": "",
+          "fields terminated by ','": "",
+          "collection items terminated by '-'": "",
+          "map keys terminated by ':'": "",
+          "store as textfile;": ""
+        },
+        "nameTemplate": "{defKey}[{defName}]",
+        "notes": {},
+        "headers": [
+          {
+            "refKey": "hideInGraph",
+            "hideInGraph": true
+          },
+          {
+            "refKey": "defKey",
+            "hideInGraph": false
+          },
+          {
+            "refKey": "defName",
+            "hideInGraph": false
+          },
+          {
+            "refKey": "primaryKey",
+            "hideInGraph": false
+          },
+          {
+            "refKey": "notNull",
+            "hideInGraph": true
+          },
+          {
+            "refKey": "autoIncrement",
+            "hideInGraph": true
+          },
+          {
+            "refKey": "domain",
+            "hideInGraph": true
+          },
+          {
+            "refKey": "type",
+            "hideInGraph": false
+          },
+          {
+            "refKey": "len",
+            "hideInGraph": false
+          },
+          {
+            "refKey": "scale",
+            "hideInGraph": false
+          },
+          {
+            "refKey": "comment",
+            "hideInGraph": true
+          },
+          {
+            "refKey": "refDict",
+            "hideInGraph": true
+          },
+          {
+            "refKey": "defaultValue",
+            "hideInGraph": true
+          },
+          {
+            "refKey": "isStandard",
+            "hideInGraph": false
+          },
+          {
+            "refKey": "uiHint",
+            "hideInGraph": true
+          },
+          {
+            "refKey": "extProps",
+            "hideInGraph": true
+          }
+        ],
+        "fields": [
+          {
+            "defKey": "id",
+            "defName": "主键",
+            "comment": "自增主键",
+            "type": "",
+            "len": 32,
+            "scale": "",
+            "primaryKey": true,
+            "notNull": true,
+            "autoIncrement": true,
+            "defaultValue": "",
+            "hideInGraph": true,
+            "domain": "16120F75-6AA7-4483-868D-F07F511BB081",
+            "refDict": "",
+            "uiHint": "",
+            "id": "7B9BBD5F-CE78-4AF4-9211-3FC2B2187DD2"
+          },
+          {
+            "defKey": "create_time",
+            "defName": "创建时间",
+            "comment": "创建时间",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": true,
+            "autoIncrement": false,
+            "defaultValue": "current_timestamp",
+            "hideInGraph": true,
+            "refDict": "",
+            "uiHint": "",
+            "id": "5BE1C584-62A8-4FC4-91B2-91319EC98D24"
+          },
+          {
+            "defKey": "update_time",
+            "defName": "更新时间",
+            "comment": "更新时间",
+            "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": true,
+            "autoIncrement": false,
+            "defaultValue": "current_timestamp on update current_timestamp",
+            "hideInGraph": true,
+            "refDict": "",
+            "uiHint": "",
+            "id": "137F7B4B-B643-45B0-8D53-06BAEBA1B22F"
+          },
+          {
+            "defKey": "is_deleted",
+            "defName": "是否删除",
+            "comment": "是否删除",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": true,
+            "autoIncrement": false,
+            "defaultValue": "0",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "6F7C1C5C-D159-41E6-BF9D-54DEEFA79AFF",
+            "id": "85BEA1DA-91E2-40EB-ABC0-5AE84241A4E7"
+          },
+          {
+            "defKey": "book_id",
+            "defName": "书籍id",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": true,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "16120F75-6AA7-4483-868D-F07F511BB081",
+            "id": "553DB050-ED1E-4D77-9604-F5E787792508"
+          },
+          {
+            "defKey": "classify_id",
+            "defName": "关联分组id",
+            "comment": "",
+            "type": "",
+            "len": "",
+            "scale": "",
+            "primaryKey": false,
+            "notNull": true,
+            "autoIncrement": false,
+            "defaultValue": "",
+            "hideInGraph": false,
+            "refDict": "",
+            "extProps": {},
+            "domain": "16120F75-6AA7-4483-868D-F07F511BB081",
+            "id": "61A33BB1-02D0-4961-A045-E699732F64B8"
           }
         ],
         "correlations": [],
@@ -2026,7 +2322,8 @@
           "971813A2-4489-48B7-981E-C30B547814A3",
           "24288542-5337-4441-B210-57FB39EC60A8",
           "052EC796-3CDC-4D84-B93A-12422C2CBD34",
-          "27580F32-BD65-43EB-81C6-ACBB9AB347D5"
+          "27580F32-BD65-43EB-81C6-ACBB9AB347D5",
+          "902D6B60-E3ED-4900-A3EB-C8CC3EE67471"
         ],
         "refViews": [],
         "refDiagrams": [],

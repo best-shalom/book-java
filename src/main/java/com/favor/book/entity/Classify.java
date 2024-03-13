@@ -16,11 +16,12 @@ import java.util.Date;
  * ApiModel注解是用在接口相关的实体类上的注解，它主要是用来对使用该注解的接口相关的实体类添加额外的描述信息，常常和@ApiModelProperty注解配合使用
  * @author Administrator
  */
+
 @Data
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@ApiModel(value = "分组类型", description = "")
+@ApiModel(value = "书籍标签", description = "")
 @Table(name="classify")
 public class Classify{
     @Id
@@ -33,8 +34,10 @@ public class Classify{
     private Date updateTime ;
     @ApiModelProperty(name = "是否删除",notes = "是否删除")
     private int isDeleted ;
-    @ApiModelProperty(name = "分组名",notes = "")
+    @ApiModelProperty(name = "标签名", notes = "")
     private String name ;
-    @ApiModelProperty(name = "分组简介",notes = "")
+    @ApiModelProperty(name = "标签简介", notes = "")
     private String information ;
+    @ApiModelProperty(name = "标签链接", notes = "")
+    private String url;
 }

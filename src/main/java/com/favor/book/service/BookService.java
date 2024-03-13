@@ -2,7 +2,9 @@ package com.favor.book.service;
 
 import com.favor.book.common.Result;
 import com.favor.book.dao.BookRepository;
+import com.favor.book.entity.Author;
 import com.favor.book.entity.Book;
+import com.favor.book.entity.Classify;
 import com.favor.book.entity.QBook;
 import com.favor.book.utils.FileUtil;
 import com.querydsl.core.types.ExpressionUtils;
@@ -13,6 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +35,13 @@ public class BookService {
     // TODO spring的装配和注入？
     @Resource
     JPAQueryFactory jpaQueryFactory;
+
+    @Resource
+    AuthorService authorService;
+    @Resource
+    ClassifyService classifyService;
+    @Resource
+    BookClassifyService bookClassifyService;
 
     /**
      * 添加单本书籍
@@ -53,7 +65,6 @@ public class BookService {
         book.setCharacterName("1");
         // id系列，从文件读取后在相应的表查询
         book.setAuthorId(1L);
-        book.setClassifyId(1L);
         book.setTypeId(1L);
         // 完结时间，从文件读取
         book.setFinishTime(new Date());
@@ -87,6 +98,18 @@ public class BookService {
     public Book getBookById(Long id) {
         return bookRepository.getById(id);
     }
+
+    public Book getBookByName(String name) {
+        return bookRepository.findByNewName(name);
+    }
+
+    public Book addBook(Book book) {
+        Book exist = getBookByName(book.getNewName());
+        if (exist != null) {
+            return exist;
+        }
+        return bookRepository.save(book);
+    }
     /**
      * 按照小说类型or阅读类型筛选小说
      *
@@ -119,5 +142,50 @@ public class BookService {
                 .fetch();
     }
 
+    public Result addOneBookInfo(Map<String, Object> json) {
+        // System.out.println(json);
+        // 存储作者信息
+        Author author = new Author();
+        author.setName((String) json.get("author"));
+        author.setTitle((String) json.get("author_title"));
+        author.setUrl((String) json.get("author_url"));
+        Author addAuthor = authorService.addAuthor(author);
 
+        // 存储标签信息
+        List<Map<String, String>> tagInfo = (List<Map<String, String>>) json.get("tag_info");
+        List<Long> classifyIds = new ArrayList<>();
+        List<String> classifyName = new ArrayList<>();
+        for (Map<String, String> tag : tagInfo) {
+            Classify classify = new Classify();
+            classify.setName(tag.get("tag"));
+            classify.setUrl(tag.get("url"));
+            Classify addClassify = classifyService.addClassify(classify);
+            classifyIds.add(addClassify.getId());
+            classifyName.add(addClassify.getName());
+        }
+
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            // 存储书籍信息，记录作者id
+            Book book = new Book();
+            book.setAuthorId(addAuthor.getId());
+            book.setFileSize((String) json.get("size"));
+            book.setStar((String) json.get("star_level"));
+            Date date = dateFormat.parse((String) json.get("finish_time"));
+            book.setFinishTime(date);
+            book.setNewName((String) json.get("book_title"));
+            book.setBookUrl((String) json.get("book_url"));
+            book.setTag(String.join(",", classifyName));
+            book.setInformation((String) json.get("book_info"));
+            Map<String, String> downInfo = (Map<String, String>) json.get("down_info");
+            book.setDownUrl(downInfo.get("href"));
+            Book addBook = addBook(book);
+            // 将书籍与标签关联
+            bookClassifyService.addAllBookClassify(addBook.getId(), classifyIds);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return Result.success();
+    }
 }

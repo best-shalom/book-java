@@ -5,7 +5,6 @@ import com.favor.book.entity.Classify;
 import com.favor.book.service.ClassifyService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -32,7 +31,7 @@ public class ClassifyController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Result addClassify(Classify classify) {
-        return classifyService.addClassify(classify);
+        return Result.success(classifyService.addClassify(classify));
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)

@@ -33,4 +33,8 @@ public class Author{
     private String name ;
     @ApiModelProperty(name = "作者简介",notes = "")
     private String information ;
+    @ApiModelProperty(name = "作者链接", notes = "")
+    private String url;
+    @ApiModelProperty(name = "作者合集", notes = "")
+    private String title;
 }

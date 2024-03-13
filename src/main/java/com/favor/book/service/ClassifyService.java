@@ -26,8 +26,20 @@ public class ClassifyService {
         return Result.success(classifyRepository.findById(id));
     }
 
-    public Result addClassify(Classify classify) {
-        return Result.success(classifyRepository.save(classify));
+    public Classify getClassifyByName(String name) {
+        return classifyRepository.findByName(name);
+    }
+
+    /**
+     * 先查重，再存入
+     */
+    public Classify addClassify(Classify classify) {
+        Classify exist = getClassifyByName(classify.getName());
+        if (exist != null) {
+            return exist;
+
+        }
+        return classifyRepository.save(classify);
     }
 
     public Result deleteClassify(Long id) {

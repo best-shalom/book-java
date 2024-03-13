@@ -31,7 +31,7 @@ public class AuthorController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Result addAuthor(Author author) {
-        return authorService.addAuthor(author);
+        return Result.success(authorService.addAuthor(author));
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)

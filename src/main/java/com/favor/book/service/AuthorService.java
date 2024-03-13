@@ -27,8 +27,19 @@ public class AuthorService {
         return Result.success(authorRepository.findById(id));
     }
 
-    public Result addAuthor(Author author) {
-        return Result.success(authorRepository.save(author));
+    public Author getAuthorByName(String name) {
+        return authorRepository.findByName(name);
+    }
+
+    /**
+     * 存入作者信息，如果作者存在，返回已存在的作者信息；否则存入作者信息并返回存入结果
+     */
+    public Author addAuthor(Author author) {
+        Author exist = getAuthorByName(author.getName());
+        if (exist != null) {
+            return exist;
+        }
+        return authorRepository.save(author);
     }
 
     public Result deleteAuthor(Long id) {
