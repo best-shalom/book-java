@@ -6,8 +6,12 @@ import com.favor.book.entity.Classify;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 /**
  * 书籍分组信息
  * @author Administrator
@@ -28,6 +32,14 @@ public class ClassifyService {
 
     public Classify getClassifyByName(String name) {
         return classifyRepository.findByName(name);
+    }
+
+    public List<Long> getClassifyIdsByNames(List<String> nameList) {
+        List<Long> classifyIdList = new ArrayList<>();
+        for (String name : nameList) {
+            classifyIdList.add(getClassifyByName(name).getId());
+        }
+        return classifyIdList;
     }
 
     /**
@@ -63,6 +75,13 @@ public class ClassifyService {
         newClassify.setInformation(classify.getInformation());
         newClassify.setUpdateTime(new Date());
         return Result.success(classifyRepository.save(newClassify));
+    }
+
+    public List<String> showAllClassifyName() {
+        List<Classify> classifyList = classifyRepository.findAll();
+        // 在Java中，.map(Classify::getFieldName) 使用了方法引用的方式，将 Classify 对象的方法 getFieldName() 应用到流中的每个元素上。
+        // 而在Classify对象中，通过getter和setter实现了对应的参数获取方法，即getName()等
+        return classifyList.stream().map(Classify::getName).collect(Collectors.toList());
     }
 }
 

@@ -99,6 +99,13 @@ public class BookService {
         return bookRepository.getById(id);
     }
 
+    public List<Book> getBookByIdList(List<Long> bookIdList) {
+        List<Book> bookList = new ArrayList<>();
+        for (Long bookId : bookIdList) {
+            bookList.add(getBookById(bookId));
+        }
+        return bookList;
+    }
     public Book getBookByName(String name) {
         return bookRepository.findByNewName(name);
     }
@@ -145,6 +152,10 @@ public class BookService {
     public Result addOneBookInfo(Map<String, Object> json) {
         // System.out.println(json);
         // 存储作者信息
+        Book exist = getBookByName((String) json.get("book_title"));
+        if (exist != null) {
+            return Result.success("书籍已存在");
+        }
         Author author = new Author();
         author.setName((String) json.get("author"));
         author.setTitle((String) json.get("author_title"));
@@ -188,4 +199,6 @@ public class BookService {
         }
         return Result.success();
     }
+
+
 }

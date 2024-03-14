@@ -43,5 +43,11 @@ public class ClassifyController {
     public Result updateClassify(Classify classify) {
         return classifyService.updateClassify(classify);
     }
+
+    @RequestMapping(value = "/showAllName", method = RequestMethod.GET)
+    public Result showAllClassifyName() {
+        return Result.success(classifyService.showAllClassifyName());
+    }
+
 }
 

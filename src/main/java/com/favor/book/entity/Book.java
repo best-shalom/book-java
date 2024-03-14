@@ -1,6 +1,7 @@
 package com.favor.book.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,6 +14,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
+/**
+ * 在Book实体类中使用Jackson注解@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})来排除Hibernate代理对象中的属性，这样在序列化时就不会包含这些代理对象。
+ */
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
 @Entity
 @DynamicInsert
