@@ -21,7 +21,7 @@ import java.util.Date;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@ApiModel(value = "书籍标签", description = "")
+@ApiModel(value = "书籍分类", description = "")
 @Table(name="classify")
 public class Classify{
     @Id
@@ -34,10 +34,10 @@ public class Classify{
     private Date updateTime ;
     @ApiModelProperty(name = "是否删除",notes = "是否删除")
     private int isDeleted ;
-    @ApiModelProperty(name = "标签名", notes = "")
+    @ApiModelProperty(name = "分类名", notes = "")
     private String name ;
-    @ApiModelProperty(name = "标签简介", notes = "")
+    @ApiModelProperty(name = "分类简介", notes = "")
     private String information ;
-    @ApiModelProperty(name = "标签链接", notes = "")
+    @ApiModelProperty(name = "分类链接", notes = "")
     private String url;
 }

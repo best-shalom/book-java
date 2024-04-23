@@ -12,13 +12,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
+/**
+ * @author CQ
+ * @version 1.0
+ */
+
 @Data
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@ApiModel(value = "书籍分组关联", description = "")
-@Table(name = "book_classify")
-public class BookClassify {
+@ApiModel(value = "书籍标签", description = "")
+@Table(name = "tag")
+public class Tag {
     @Id
     @GeneratedValue
     @ApiModelProperty(name = "主键", notes = "自增主键")
@@ -29,10 +34,10 @@ public class BookClassify {
     private Date updateTime;
     @ApiModelProperty(name = "是否删除", notes = "是否删除")
     private int isDeleted;
-    @ApiModelProperty(name = "书籍id", notes = "")
-    private Long bookId;
-    @ApiModelProperty(name = "关联分组id", notes = "")
-    private Long classifyId;
-    @ApiModelProperty(name = "关联标签id", notes = "")
-    private Long tagId;
+    @ApiModelProperty(name = "标签名", notes = "")
+    private String name;
+    @ApiModelProperty(name = "标签简介", notes = "")
+    private String information;
+    @ApiModelProperty(name = "标签链接", notes = "")
+    private String url;
 }

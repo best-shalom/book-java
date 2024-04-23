@@ -39,6 +39,8 @@ public class Book{
     private String newName;
     @ApiModelProperty(name = "小说作者",notes = "")
     private Long authorId ;
+    @ApiModelProperty(name = "分类", notes = "")
+    private Long classifyId;
     @ApiModelProperty(name = "阅读类型",notes = "比如是否感兴趣、已经看完、值得回看、不好看等等")
     private Long typeId ;
     @ApiModelProperty(name = "文件名", notes = "")
