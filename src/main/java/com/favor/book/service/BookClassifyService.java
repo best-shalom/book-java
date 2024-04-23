@@ -48,12 +48,12 @@ public class BookClassifyService {
     @Resource
     BookService bookService;
 
-    public BookClassify getByBookIdAndClassifyId(Long bookId, Long classifyId) {
-        return bookClassifyRepository.findByBookIdAndClassifyId(bookId, classifyId);
+    public BookClassify getByBookIdAndTagId(Long bookId, Long tagId) {
+        return bookClassifyRepository.findByBookIdAndTagId(bookId, tagId);
     }
 
-    public BookClassify addBookClassify(Long bookId, Long classifyId) {
-        BookClassify exist = getByBookIdAndClassifyId(bookId, classifyId);
+    public BookClassify addBookClassify(Long bookId, Long classifyId, Long tagId) {
+        BookClassify exist = getByBookIdAndTagId(bookId, tagId);
         if (exist != null) {
             // 对应的书籍-标签关系已经存在，返回null表示存在
             return null;
@@ -61,15 +61,16 @@ public class BookClassifyService {
         BookClassify bookClassify = new BookClassify();
         bookClassify.setBookId(bookId);
         bookClassify.setClassifyId(classifyId);
+        bookClassify.setTagId(tagId);
         return bookClassifyRepository.save(bookClassify);
     }
 
     /**
      * 关联一本书对应的所有标签
      */
-    public void addAllBookClassify(Long bookId, List<Long> classifyIds) {
-        for (Long classifyId : classifyIds) {
-            BookClassify res = addBookClassify(bookId, classifyId);
+    public void addAllBookClassify(Long bookId, Long classifyId, List<Long> tagIds) {
+        for (Long tagId : tagIds) {
+            BookClassify res = addBookClassify(bookId, classifyId, tagId);
         }
     }
 

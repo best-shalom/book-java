@@ -2,10 +2,7 @@ package com.favor.book.service;
 
 import com.favor.book.common.Result;
 import com.favor.book.dao.BookRepository;
-import com.favor.book.entity.Author;
-import com.favor.book.entity.Book;
-import com.favor.book.entity.Classify;
-import com.favor.book.entity.QBook;
+import com.favor.book.entity.*;
 import com.favor.book.utils.FileUtil;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
@@ -42,6 +39,8 @@ public class BookService {
     ClassifyService classifyService;
     @Resource
     BookClassifyService bookClassifyService;
+    @Resource
+    TagService tagService;
 
     /**
      * 添加单本书籍
@@ -162,23 +161,30 @@ public class BookService {
         author.setUrl((String) json.get("author_url"));
         Author addAuthor = authorService.addAuthor(author);
 
+        // 存储分类信息
+        Classify classify = new Classify();
+        classify.setName((String) json.get("book_classify"));
+        classify.setUrl((String) json.get("book_classify_url"));
+        Classify addClassify = classifyService.addClassify(classify);
+        Long classifyId = addClassify.getId();
+
+
         // 存储标签信息
         List<Map<String, String>> tagInfo = (List<Map<String, String>>) json.get("tag_info");
-        List<Long> classifyIds = new ArrayList<>();
-        List<String> classifyName = new ArrayList<>();
-        for (Map<String, String> tag : tagInfo) {
-            Classify classify = new Classify();
-            classify.setName(tag.get("tag"));
-            classify.setUrl(tag.get("url"));
-            Classify addClassify = classifyService.addClassify(classify);
-            classifyIds.add(addClassify.getId());
-            classifyName.add(addClassify.getName());
+        List<Long> tagIds = new ArrayList<>();
+        List<String> tagNames = new ArrayList<>();
+        for (Map<String, String> oneTag : tagInfo) {
+            Tag tag = new Tag();
+            tag.setName(oneTag.get("tag"));
+            tag.setUrl(oneTag.get("url"));
+            Tag addTag = tagService.addTag(tag);
+            tagIds.add(addTag.getId());
+            tagNames.add(addTag.getName());
         }
 
-
+        // 存储书籍信息，记录作者id
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            // 存储书籍信息，记录作者id
             Book book = new Book();
             book.setAuthorId(addAuthor.getId());
             book.setFileSize((String) json.get("size"));
@@ -187,13 +193,14 @@ public class BookService {
             book.setFinishTime(date);
             book.setNewName((String) json.get("book_title"));
             book.setBookUrl((String) json.get("book_url"));
-            book.setTag(String.join(",", classifyName));
+            book.setClassifyId(classifyId);
+            book.setTag(String.join(",", tagNames));
             book.setInformation((String) json.get("book_info"));
             Map<String, String> downInfo = (Map<String, String>) json.get("down_info");
             book.setDownUrl(downInfo.get("href"));
             Book addBook = addBook(book);
-            // 将书籍与标签关联
-            bookClassifyService.addAllBookClassify(addBook.getId(), classifyIds);
+            // 将书籍与分类、标签关联
+            bookClassifyService.addAllBookClassify(addBook.getId(), classifyId, tagIds);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

@@ -5,8 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+/**
+ * @author CQ
+ */
 public interface BookClassifyRepository extends JpaRepository<BookClassify, Long> {
-    BookClassify findByBookIdAndClassifyId(Long bookId, Long classifyId);
+    BookClassify findByBookIdAndTagId(Long bookId, Long tagId);
 
     List<BookClassify> findAllByClassifyId(Long classifyId);
 }
