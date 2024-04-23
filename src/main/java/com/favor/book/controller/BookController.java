@@ -6,14 +6,10 @@ import com.favor.book.service.BookService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 
@@ -34,17 +30,19 @@ public class BookController {
     @RequestMapping(value = "/addOneBook",method = RequestMethod.POST)
     @ResponseBody
     public Result addOneBook(MultipartFile file, String newName) {
-        return bookService.addOneBook(file, newName);
+        return bookService.addOneBookFile(file, newName);
     }
 
     @RequestMapping(value = "/downloadOneBook", method = RequestMethod.POST)
     @ResponseBody
     public Result downloadOneBook(Long id, String savePath) {
-        return bookService.downloadOneBook(id, savePath);
+        return bookService.downloadOneBookFile(id, savePath);
     }
 
     /**
-     * 注解@RequestBody:表示要从请求的主体中获取数据
+     * 注解@RequestBody:是 Spring MVC 中的一个注解，用于将方法的返回值直接写入 HTTP 响应体中，而不是通过视图解析器渲染成页面。
+     * 它通常用于构建 RESTful 服务或者返回 JSON、XML 等格式的数据给客户端。
+     * ！！！如果不使用RequestBody注解，接口返回结果就没有办法正确被前端、apiFox等识别，从而报错404，这是一个很容易误解的问题！！！
      *
      * @param json python爬虫获取的json格式的书籍信息
      * @return 返回添加结果
@@ -67,9 +65,22 @@ public class BookController {
      */
     @RequestMapping(value = "listBooks", method = RequestMethod.POST)
     @ResponseBody
-    public Result listBooks(@PageableDefault() Pageable pageable, Long classifyId, Long typeId, int orderByUpload, int orderByFinish) {
-        List<Book> res = bookService.listBooks(pageable, classifyId, typeId, orderByUpload, orderByFinish);
-        return Result.success(res);
+    public Result listBooks(@PageableDefault() Pageable pageable, String classifyName, String tagName, String typeName, int orderByUpload, int orderByFinish) {
+        return bookService.listBooks(pageable, classifyName, tagName, typeName, orderByUpload, orderByFinish);
+    }
 
+    /**
+     * 使用 @RequestParam 注解来映射请求参数
+     *
+     * @param id 书籍id
+     * @return 返回单本书籍信息
+     */
+    @RequestMapping(value = "getBookById", method = RequestMethod.GET)
+    @ResponseBody
+    public Result getBookById(@RequestParam Long id) {
+        System.out.println(id);
+        Book res = bookService.getBookById(id);
+        System.out.println(res);
+        return Result.success(res);
     }
 }

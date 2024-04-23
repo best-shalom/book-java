@@ -31,7 +31,13 @@ public class ClassifyService {
     }
 
     public Classify getClassifyByName(String name) {
-        return classifyRepository.findByName(name);
+        Optional<Classify> classifyOptional = classifyRepository.findByName(name);
+        return classifyOptional.orElse(null);
+    }
+
+    public Long getClassifyIdByName(String name) {
+        Optional<Classify> classifyOptional = classifyRepository.findByName(name);
+        return classifyOptional.map(Classify::getId).orElse(null);
     }
 
     public List<Long> getClassifyIdsByNames(List<String> nameList) {

@@ -31,7 +31,15 @@ public class TagService {
     }
 
     public Tag getTagByName(String name) {
-        return tagRepository.findByName(name);
+        // 将查询结果封装在一个 Optional 对象中，然后使用 ifPresent 方法来执行当查询结果非空时的操作。
+        Optional<Tag> tagOptional = tagRepository.findByName(name);
+        return tagOptional.orElse(null);
+    }
+
+    public Long getTagIdByName(String name) {
+        // 将查询结果封装在一个 Optional 对象中，然后使用 ifPresent 方法来执行当查询结果非空时的操作。
+        Optional<Tag> tagOptional = tagRepository.findByName(name);
+        return tagOptional.map(Tag::getId).orElse(null);
     }
 
     /**

@@ -1,9 +1,15 @@
 package com.favor.book.common;
 
+import lombok.Getter;
+
+@Getter
 public class Result {
-    private Integer code;// 响应码，1 代表成功; 0 代表失败
-    private String msg;  // 响应码 描述字符串
-    private Object data; // 返回的数据
+    // 响应码，1 代表成功; 0 代表失败
+    private Integer code;
+    // 响应码 描述字符串
+    private String msg;
+    // 返回的数据
+    private Object data;
 
     public Result() {
     }
@@ -29,24 +35,12 @@ public class Result {
         return new Result(0, msg, null);
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
     public void setCode(Integer code) {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
-    }
-
     public void setMsg(String msg) {
         this.msg = msg;
-    }
-
-    public Object getData() {
-        return data;
     }
 
     public void setData(Object data) {

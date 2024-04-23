@@ -3,6 +3,8 @@ package com.favor.book.dao;
 import com.favor.book.entity.Classify;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * @author Administrator
  */
@@ -15,5 +17,5 @@ public interface ClassifyRepository extends JpaRepository<Classify, Long> {
      * By: 表示接下来是根据哪个字段进行查询。
      * Name: 表示具体要查询的字段名，这里就是按照 name 字段进行查询。
      */
-    Classify findByName(String name);
+    Optional<Classify> findByName(String name);
 }

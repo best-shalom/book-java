@@ -14,10 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Administrator
@@ -41,6 +38,8 @@ public class BookService {
     BookClassifyService bookClassifyService;
     @Resource
     TagService tagService;
+    @Resource
+    TypeService typeService;
 
     /**
      * 添加单本书籍
@@ -48,7 +47,7 @@ public class BookService {
      * @param file 书籍文件
      * @return 上传结果
      */
-    public Result addOneBook(MultipartFile file, String newName) {
+    public Result addOneBookFile(MultipartFile file, String newName) {
         Map<String, String> res = fileUtil.addOneFile(file, newName);
         if (res == null) {
             return Result.error("文件上传失败");
@@ -82,7 +81,7 @@ public class BookService {
 
     }
 
-    public Result downloadOneBook(Long id, String savePath) {
+    public Result downloadOneBookFile(Long id, String savePath) {
         Book book = getBookById(id);
         String filePath = book.getFilePath();
         String fileName = book.getNewName();
@@ -119,33 +118,54 @@ public class BookService {
     /**
      * 按照小说类型or阅读类型筛选小说
      *
-     * @param classifyId    小说类型
-     * @param typeId        阅读类型
+     * @param classifyName    小说分类
+     * @param tagName         小说标签
+     * @param typeName        阅读类型
      * @param orderByUpload 是否根据上传时间排序，0-否，1-正序，2-倒序
      * @param orderByFinish 是否根据完结时间排序，0-否，1-正序，2-倒序
      * @return 返回指定排序方式的小说列表
      */
-    public List<Book> listBooks(Pageable pageable, Long classifyId, Long typeId, int orderByUpload, int orderByFinish) {
+    public Result listBooks(Pageable pageable, String classifyName, String tagName, String typeName, int orderByUpload, int orderByFinish) {
+        Long classifyId = classifyService.getClassifyIdByName(classifyName);
+        Long tagId = tagService.getTagIdByName(tagName);
+        Long typeId = typeService.getTypeIdByName(typeName);
+
         // Pageable 是Spring Data库中定义的一个接口，用于构造翻页查询，是所有分页相关信息的一个抽象，通过该接口，我们可以得到和分页相关所有信息（例如pageNumber、pageSize等），这样，Jpa就能够通过pageable参数来得到一个带分页信息的Sql语句。
         QBook book = QBook.book;
         // 初始化组装条件(book.isDeleted为0，即未删除的书籍)
         Predicate predicate = book.isDeleted.eq(0);
         // 执行动态条件拼装：如果参数==null，则predicate=predicate不变，否则就使用ExpressionUtils构建查询条件
         predicate = classifyId == null ? predicate : ExpressionUtils.and(predicate, book.classifyId.eq(classifyId));
+        // 标签可以用模糊查询，也可以从关联表中匹配
+        predicate = tagId == null ? predicate : ExpressionUtils.and(predicate, book.tag.contains(tagName));
         predicate = typeId == null ? predicate : ExpressionUtils.and(predicate, book.typeId.eq(typeId));
         // page的页面下标从0开始
-        // return bookRepository.findAll(predicate, pageable);
-        return jpaQueryFactory.selectFrom(book)
-                // 查询对象
+        // 查询所有符合条件的记录
+        List<Book> allBooks = jpaQueryFactory.selectFrom(book)
                 .where(predicate)
-                // 查询条件
                 .orderBy(book.createTime.asc())
-                // 起始页
-                .offset(pageable.getOffset())
-                // 每页大小
-                .limit(pageable.getPageSize())
-                // 排序方式
                 .fetch();
+        // 计算总记录数
+        long totalCount = allBooks.size();
+        // 计算总页数
+        long totalPages = (totalCount + pageable.getPageSize() - 1) / pageable.getPageSize();
+        // 分页
+        int fromIndex = (int) pageable.getOffset();
+        int toIndex = Math.min((int) (pageable.getOffset() + pageable.getPageSize()), allBooks.size());
+        List<Book> bookList = allBooks.subList(fromIndex, toIndex);
+        // 构建page信息
+        Map<String, Object> pageInfo = new HashMap<>();
+        pageInfo.put("pageNumber", pageable.getPageNumber());
+        pageInfo.put("pageSize", pageable.getPageSize());
+        pageInfo.put("totalPages", totalPages);
+        pageInfo.put("totalCount", totalCount);
+
+        Map<String, Object> res = new HashMap<>();
+        res.put("bookList", bookList);
+        res.put("pageInfo", pageInfo);
+
+        return Result.success(res);
+
     }
 
     public Result addOneBookInfo(Map<String, Object> json) {
@@ -206,6 +226,5 @@ public class BookService {
         }
         return Result.success();
     }
-
 
 }
