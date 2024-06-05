@@ -27,7 +27,7 @@ public class TypeService {
     }
 
     public Type getTypeByName(String name) {
-        Optional<Type> typeOptional = typeRepository.findByName(name);
+        Optional<Type> typeOptional = typeRepository.findFirstByName(name);
         return typeOptional.orElse(null);
     }
 
@@ -37,6 +37,9 @@ public class TypeService {
     }
 
     public Result addType(Type type) {
+        if (typeRepository.findFirstByName(type.getName()).isPresent()) {
+            return Result.error("类型已存在");
+        }
         return Result.success(typeRepository.save(type));
     }
 

@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author Administrator
  * 1.JPA和mybatis
@@ -19,4 +21,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long>, QuerydslPredicateExecutor<Book> {
     Book findByNewName(String name);
+
+    List<Book> findAllByTypeId(Long typeId);
 }

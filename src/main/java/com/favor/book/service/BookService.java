@@ -115,12 +115,42 @@ public class BookService {
         }
         return bookRepository.save(book);
     }
+
+    /**
+     * 根据选择的参数更新书籍信息
+     *
+     * @param bookId       id标识书籍
+     * @param typeName     添加、更新、删除阅读类型
+     * @param classifyName 添加、更新、删除小说分类
+     */
+    public Result updateBookInfo(Long bookId, String typeName, String classifyName) {
+        Book book = getBookById(bookId);
+        if (book == null) {
+            return Result.error("书籍不存在");
+        }
+        if (typeName != null) {
+            Long typeId = typeService.getTypeIdByName(typeName);
+            if (typeId == null) {
+                return Result.error("阅读类型不存在");
+            }
+            book.setTypeId(typeId);
+        }
+        if (classifyName != null) {
+            Long classifyId = classifyService.getClassifyIdByName(classifyName);
+            if (classifyId == null) {
+                return Result.error("小说分类不存在");
+            }
+            book.setClassifyId(classifyId);
+        }
+        return Result.success(bookRepository.save(book));
+    }
+
     /**
      * 按照小说类型or阅读类型筛选小说
      *
      * @param classifyName    小说分类
      * @param tagName         小说标签
-     * @param typeName        阅读类型
+     * @param typeName        显示某个阅读类型下的所有书籍
      * @param orderByUpload 是否根据上传时间排序，0-否，1-正序，2-倒序
      * @param orderByFinish 是否根据完结时间排序，0-否，1-正序，2-倒序
      * @return 返回指定排序方式的小说列表

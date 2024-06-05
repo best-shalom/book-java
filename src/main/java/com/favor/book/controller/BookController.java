@@ -15,6 +15,8 @@ import java.util.Map;
 
 /**
  * @author Administrator
+ * 尽量统一使controller层直接return，即在service层返回Result对象，而不是直接返回对象，其中如果有些复用的需要提供对象的再考虑在controller层处理
+ * 因为这样的话，方法的报错信息这些可以直接在service层根据处理情况添加
  */
 @Controller
 @RequestMapping("/book")
@@ -78,9 +80,13 @@ public class BookController {
     @RequestMapping(value = "getBookById", method = RequestMethod.GET)
     @ResponseBody
     public Result getBookById(@RequestParam Long id) {
-        System.out.println(id);
         Book res = bookService.getBookById(id);
-        System.out.println(res);
         return Result.success(res);
+    }
+
+    @RequestMapping(value = "updateBookInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Result updateBookInfo(Long bookId, String typeName, String classifyName) {
+        return bookService.updateBookInfo(bookId, typeName, classifyName);
     }
 }

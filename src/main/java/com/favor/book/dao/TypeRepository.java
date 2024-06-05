@@ -9,5 +9,6 @@ import java.util.Optional;
  * @author Administrator
  */
 public interface TypeRepository extends JpaRepository<Type, Long> {
-    Optional<Type> findByName(String name);
+    // 如果name存在重复，则返回第一个（使用findByName的话就会返回全部符合的）
+    Optional<Type> findFirstByName(String name);
 }
