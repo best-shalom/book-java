@@ -86,7 +86,7 @@ public class BookController {
 
     @RequestMapping(value = "updateBookInfo", method = RequestMethod.POST)
     @ResponseBody
-    public Result updateBookInfo(Long bookId, String typeName, String classifyName) {
-        return bookService.updateBookInfo(bookId, typeName, classifyName);
+    public Result updateBookInfo(Long bookId, String typeName, String classifyName, String evaluate) {
+        return bookService.updateBookInfo(bookId, typeName, classifyName, evaluate);
     }
 }

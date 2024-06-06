@@ -122,8 +122,9 @@ public class BookService {
      * @param bookId       id标识书籍
      * @param typeName     添加、更新、删除阅读类型
      * @param classifyName 添加、更新、删除小说分类
+     * @param evaluate     添加、更新、删除评价
      */
-    public Result updateBookInfo(Long bookId, String typeName, String classifyName) {
+    public Result updateBookInfo(Long bookId, String typeName, String classifyName, String evaluate) {
         Book book = getBookById(bookId);
         if (book == null) {
             return Result.error("书籍不存在");
@@ -141,6 +142,9 @@ public class BookService {
                 return Result.error("小说分类不存在");
             }
             book.setClassifyId(classifyId);
+        }
+        if (evaluate != null) {
+            book.setEvaluate(evaluate);
         }
         return Result.success(bookRepository.save(book));
     }
