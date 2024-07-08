@@ -31,6 +31,13 @@ public class ClassifyController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Result addClassify(Classify classify) {
+        if (classify.getName().isEmpty()) {
+            return Result.error("分类名称不能为空");
+        }
+        Classify exist = classifyService.getClassifyByName(classify.getName());
+        if (exist != null) {
+            return Result.error("分类名称已存在");
+        }
         return Result.success(classifyService.addClassify(classify));
     }
 
