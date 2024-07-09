@@ -41,6 +41,8 @@ public class BookService {
     @Resource
     TypeService typeService;
 
+    static final String BASE_URL = "https://www.ttxxll.com";
+
     /**
      * 添加单本书籍
      *
@@ -259,6 +261,34 @@ public class BookService {
             throw new RuntimeException(e);
         }
         return Result.success();
+    }
+
+    public Map<String, Object> getBookInfo(Long id) {
+        Book book = bookRepository.getById(id);
+        Map<String, Object> res = new HashMap<>();
+        res.put("bookName", book.getNewName());
+        res.put("bookFinishTime", book.getFinishTime());
+        res.put("bookStar", book.getStar());
+        res.put("bookFileSize", book.getFileSize());
+        if (book.getClassifyId() != null) {
+            Classify classify = classifyService.getClassifyById(book.getClassifyId());
+            res.put("bookClassify", classify.getName());
+            res.put("bookClassifyUrl", BASE_URL + classify.getUrl());
+        }
+        if (book.getAuthorId() != null) {
+            Author author = authorService.getAuthorById(book.getAuthorId());
+            res.put("bookAuthor", author.getName());
+            res.put("bookAuthorUrl", BASE_URL + author.getUrl());
+        }
+        if (book.getTypeId() != null) {
+            res.put("bookType", typeService.getTypeById(book.getTypeId()).getName());
+        }
+        res.put("bookTag", book.getTag());
+        res.put("evaluate", book.getEvaluate());
+        res.put("information", book.getInformation());
+        res.put("bookUrl", book.getBookUrl());
+        res.put("bookDownUrl", BASE_URL + book.getDownUrl());
+        return res;
     }
 
 }

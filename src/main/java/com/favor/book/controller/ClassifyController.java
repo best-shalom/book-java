@@ -26,7 +26,7 @@ public class ClassifyController {
 
     @RequestMapping(value = "/getById", method = RequestMethod.POST)
     public Result getClassifyById(Long id) {
-        return classifyService.getClassifyById(id);
+        return Result.success(classifyService.getClassifyById(id));
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)

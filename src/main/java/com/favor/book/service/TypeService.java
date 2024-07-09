@@ -22,8 +22,9 @@ public class TypeService {
         return Result.success(typeRepository.findAll());
     }
 
-    public Result getTypeById(Long id) {
-        return Result.success(typeRepository.findById(id));
+    public Type getTypeById(Long id) {
+        Optional<Type> typeOptional = typeRepository.findById(id);
+        return typeOptional.orElse(null);
     }
 
     public Type getTypeByName(String name) {

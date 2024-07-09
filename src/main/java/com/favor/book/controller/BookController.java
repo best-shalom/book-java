@@ -1,7 +1,6 @@
 package com.favor.book.controller;
 
 import com.favor.book.common.Result;
-import com.favor.book.entity.Book;
 import com.favor.book.service.BookService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -77,11 +76,10 @@ public class BookController {
      * @param id 书籍id
      * @return 返回单本书籍信息
      */
-    @RequestMapping(value = "getBookById", method = RequestMethod.GET)
+    @RequestMapping(value = "getBookInfo", method = RequestMethod.GET)
     @ResponseBody
     public Result getBookById(@RequestParam Long id) {
-        Book res = bookService.getBookById(id);
-        return Result.success(res);
+        return Result.success(bookService.getBookInfo(id));
     }
 
     @RequestMapping(value = "updateBookInfo", method = RequestMethod.POST)

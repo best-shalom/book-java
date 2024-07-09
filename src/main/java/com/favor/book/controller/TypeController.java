@@ -26,7 +26,7 @@ public class TypeController {
 
     @RequestMapping(value = "/getById", method = RequestMethod.POST)
     public Result getTypeById(Long id) {
-        return typeService.getTypeById(id);
+        return Result.success(typeService.getTypeById(id));
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)

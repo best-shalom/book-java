@@ -26,8 +26,9 @@ public class ClassifyService {
         return Result.success(classifyRepository.findAll());
     }
 
-    public Result getClassifyById(Long id) {
-        return Result.success(classifyRepository.findById(id));
+    public Classify getClassifyById(Long id) {
+        Optional<Classify> classifyOptional = classifyRepository.findById(id);
+        return classifyOptional.orElse(null);
     }
 
     public Classify getClassifyByName(String name) {

@@ -26,7 +26,7 @@ public class AuthorController {
 
     @RequestMapping(value = "/getById", method = RequestMethod.POST)
     public Result getAuthorById(Long id) {
-        return authorService.getAuthorById(id);
+        return Result.success(authorService.getAuthorById(id));
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
