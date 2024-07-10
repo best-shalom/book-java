@@ -4,8 +4,8 @@ import com.favor.book.common.Result;
 import com.favor.book.dao.BookRepository;
 import com.favor.book.entity.*;
 import com.favor.book.utils.FileUtil;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,8 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Administrator
@@ -162,21 +164,47 @@ public class BookService {
      * @return 返回指定排序方式的小说列表
      */
     public Result listBooks(Pageable pageable, String classifyName, String tagName, String typeName, int orderByUpload, int orderByFinish) {
-        Long classifyId = classifyService.getClassifyIdByName(classifyName);
-        Long tagId = tagService.getTagIdByName(tagName);
-        Long typeId = typeService.getTypeIdByName(typeName);
+        List<Long> classifyIdList = classifyName != null ? Stream.of(classifyName.split(","))
+                // 检查 classifyName 是否不为 null。如果 classifyName 为 null，则 classifyIdList 也为 null。
+                // 将逗号分隔的分类名称字符串转换为一个流（Stream），每个分类名称作为流中的一个元素。
+                .map(String::trim)
+                // 对流中的每个分类名称调用 trim 方法，去除名称两端的空格。
+                .filter(name -> !name.isEmpty())
+                // 过滤掉空字符串（即长度为 0 的字符串）,即filter只保留不为空的
+                .map(classifyService::getClassifyIdByName)
+                // 对流中的每个分类名称调用 classifyService.getClassifyIdByName 方法，将其转换为分类 ID。
+                .filter(Objects::nonNull)
+                // 过滤掉 null 值，确保分类 ID 列表中没有无效的 ID。
+                .collect(Collectors.toList()) : null;
+        // 将处理后的流收集为一个列表（List）。
+        List<String> tagNameList = tagName != null ? Stream.of(tagName.split(",")).map(String::trim).filter(name -> !name.isEmpty()).collect(Collectors.toList()) : null;
+        List<Long> typeIdList = typeName != null ? Stream.of(typeName.split(",")).map(String::trim).filter(name -> !name.isEmpty()).map(typeService::getTypeIdByName).filter(Objects::nonNull).collect(Collectors.toList()) : null;
 
         // Pageable 是Spring Data库中定义的一个接口，用于构造翻页查询，是所有分页相关信息的一个抽象，通过该接口，我们可以得到和分页相关所有信息（例如pageNumber、pageSize等），这样，Jpa就能够通过pageable参数来得到一个带分页信息的Sql语句。
+        // QBook 是一个由 QueryDSL 生成的类，它代表数据库表中的 Book 实体。通过 QBook.book 获取这个类的实例，可以方便地构建查询条件。
         QBook book = QBook.book;
-        // 初始化组装条件(book.isDeleted为0，即未删除的书籍)
-        Predicate predicate = book.isDeleted.eq(0);
-        // 执行动态条件拼装：如果参数==null，则predicate=predicate不变，否则就使用ExpressionUtils构建查询条件
-        predicate = classifyId == null ? predicate : ExpressionUtils.and(predicate, book.classifyId.eq(classifyId));
-        // 标签可以用模糊查询，也可以从关联表中匹配
-        predicate = tagId == null ? predicate : ExpressionUtils.and(predicate, book.tag.contains(tagName));
-        predicate = typeId == null ? predicate : ExpressionUtils.and(predicate, book.typeId.eq(typeId));
+        // BooleanExpression 是 QueryDSL 中用于表示布尔条件的类。初始化组装条件(book.isDeleted为0，即未删除的书籍)
+        BooleanExpression predicate = book.isDeleted.eq(0);
+        // 执行动态条件拼装
+        if (classifyIdList != null && !classifyIdList.isEmpty()) {
+            // 构建一个条件，筛选分类 ID 在 classifyIdList 中的书籍。predicate.and(...) 将这个条件与之前的条件组合，要求同时满足
+            predicate = predicate.and(book.classifyId.in(classifyIdList));
+        }
+        if (tagNameList != null) {
+            // 使用 tagNameList.stream() 将标签名称列表转换为流（stream）。
+            // map(book.tag::contains) 将每个标签名称映射为一个条件，检查书籍的标签字段是否包含该标签名称。
+            // .reduce(BooleanExpression::and) 将这些条件使用逻辑 and 组合成一个条件，即标签字段必须包含所有标签名称。
+            // orElse(Expressions.FALSE.isFalse()) 如果没有标签名称，则返回一个永远为 false 的条件。
+            // predicate = predicate.and(tagExpression) 将这个条件与之前的条件组合，要求同时满足。
+            BooleanExpression tagExpression = tagNameList.stream().map(book.tag::contains).reduce(BooleanExpression::and).orElse(Expressions.FALSE.isFalse());
+            predicate = predicate.and(tagExpression);
+        }
+        if (typeIdList != null) {
+            predicate = predicate.and(book.typeId.in(typeIdList));
+        }
         // page的页面下标从0开始
-        // 查询所有符合条件的记录
+        // jpaQueryFactory 是 QueryDSL 的 JPAQueryFactory 实例，用于创建和执行查询。
+        // selectFrom(book) 指定要从 Book 表中查询数据。
         List<Book> allBooks = jpaQueryFactory.selectFrom(book)
                 .where(predicate)
                 .orderBy(book.createTime.asc())
