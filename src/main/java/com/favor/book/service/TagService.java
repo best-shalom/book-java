@@ -22,7 +22,7 @@ public class TagService {
     @Resource
     private TagRepository tagRepository;
 
-    public Result getAllClassifies() {
+    public Result getAllTags() {
         return Result.success(tagRepository.findAll());
     }
 

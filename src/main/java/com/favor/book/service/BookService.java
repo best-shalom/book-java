@@ -190,7 +190,7 @@ public class BookService {
             // 构建一个条件，筛选分类 ID 在 classifyIdList 中的书籍。predicate.and(...) 将这个条件与之前的条件组合，要求同时满足
             predicate = predicate.and(book.classifyId.in(classifyIdList));
         }
-        if (tagNameList != null) {
+        if (tagNameList != null && !tagNameList.isEmpty()) {
             // 使用 tagNameList.stream() 将标签名称列表转换为流（stream）。
             // map(book.tag::contains) 将每个标签名称映射为一个条件，检查书籍的标签字段是否包含该标签名称。
             // .reduce(BooleanExpression::and) 将这些条件使用逻辑 and 组合成一个条件，即标签字段必须包含所有标签名称。
@@ -199,7 +199,7 @@ public class BookService {
             BooleanExpression tagExpression = tagNameList.stream().map(book.tag::contains).reduce(BooleanExpression::and).orElse(Expressions.FALSE.isFalse());
             predicate = predicate.and(tagExpression);
         }
-        if (typeIdList != null) {
+        if (typeIdList != null && !typeIdList.isEmpty()) {
             predicate = predicate.and(book.typeId.in(typeIdList));
         }
         // page的页面下标从0开始
