@@ -2,8 +2,8 @@ package com.favor.book.controller;
 
 import com.favor.book.common.Result;
 import com.favor.book.service.BookService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,6 +56,9 @@ public class BookController {
 
     /**
      * 按条件过滤书籍列表
+     * RequestBody 从请求体中获取整个请求的内容。
+     * RequestParam 从 URL 查询字符串或表单中获取特定的请求参数值。
+     * 如果您的请求体是 JSON 格式，Spring MVC 默认不会将其解析为 @RequestParam 中的参数，而是需要使用 @RequestBody 注解来获取。您可以将其映射为一个对象或者使用 Map<String, Object> 来接收整个请求体。
      * </p>
      * 在请求中只需要在方法的参数中直接定义一个pageable类型的参数，当Spring发现这个参数时，Spring会自动的根据request的参数来组装该pageable对象。
      * Spring支持的request参数如下：
@@ -66,8 +69,12 @@ public class BookController {
      */
     @RequestMapping(value = "listBooks", method = RequestMethod.POST)
     @ResponseBody
-    public Result listBooks(@PageableDefault() Pageable pageable, String classifyName, String tagName, String typeName, int orderByUpload, int orderByFinish) {
-        return bookService.listBooks(pageable, classifyName, tagName, typeName, orderByUpload, orderByFinish);
+    public Result listBooks(@RequestBody Map<String, Object> json) {
+        // 从json中提取分页参数(使用@RequestBody只能接收一整个整体json，不能独立接收pageable)
+        int page = json.containsKey("page") ? (int) json.get("page") : 0;
+        int size = json.containsKey("size") ? Integer.parseInt((String) json.get("size")) : 10;
+        Pageable newPageable = PageRequest.of(page, size);
+        return bookService.listBooks(newPageable, json);
     }
 
     /**

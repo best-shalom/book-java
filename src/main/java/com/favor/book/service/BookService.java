@@ -4,6 +4,8 @@ import com.favor.book.common.Result;
 import com.favor.book.dao.BookRepository;
 import com.favor.book.entity.*;
 import com.favor.book.utils.FileUtil;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -156,14 +158,87 @@ public class BookService {
     /**
      * 按照小说类型or阅读类型筛选小说
      *
-     * @param classifyName    小说分类
-     * @param tagName         小说标签
-     * @param typeName        显示某个阅读类型下的所有书籍
-     * @param orderByUpload 是否根据上传时间排序，0-否，1-正序，2-倒序
-     * @param orderByFinish 是否根据完结时间排序，0-否，1-正序，2-倒序
      * @return 返回指定排序方式的小说列表
      */
-    public Result listBooks(Pageable pageable, String classifyName, String tagName, String typeName, int orderByUpload, int orderByFinish) {
+    public Result listBooks(Pageable pageable, Map<String, Object> json) {
+        QBook book = QBook.book;
+        Map<String, Object> filterInfo = json.containsKey("filterInfo") && json.get("filterInfo") instanceof Map ? (Map<String, Object>) json.get("filterInfo") : Collections.emptyMap();
+
+        Map<String, Object> searchInfo = json.containsKey("searchInfo") && json.get("searchInfo") instanceof Map ? (Map<String, Object>) json.get("searchInfo") : Collections.emptyMap();
+
+        Map<String, Object> rangeInfo = json.containsKey("rangeInfo") && json.get("rangeInfo") instanceof Map ? (Map<String, Object>) json.get("rangeInfo") : Collections.emptyMap();
+
+        Map<String, Object> sortInfo = json.containsKey("sortInfo") && json.get("sortInfo") instanceof Map ? (Map<String, Object>) json.get("sortInfo") : Collections.emptyMap();
+
+        // 构建查询条件
+        BooleanBuilder predicate = new BooleanBuilder();
+        buildFilterPredicate(predicate, filterInfo);
+
+        // 处理搜索条件
+        buildSearchPredicate(predicate, searchInfo);
+
+        // 处理范围条件
+        buildRangePredicate(predicate, rangeInfo);
+
+        // 处理排序条件
+        OrderSpecifier<Date> orderByField = buildSortExpression(sortInfo);
+        // page的页面下标从0开始
+        // jpaQueryFactory 是 QueryDSL 的 JPAQueryFactory 实例，用于创建和执行查询。
+        // selectFrom(book) 指定要从 Book 表中查询数据。
+        List<Book> allBooks = jpaQueryFactory.selectFrom(book)
+                .where(predicate).orderBy(orderByField)
+                .fetch();
+        // 计算总记录数
+        long totalCount = allBooks.size();
+        // 计算总页数
+        long totalPages = (totalCount + pageable.getPageSize() - 1) / pageable.getPageSize();
+        // 分页
+        int fromIndex = (int) pageable.getOffset();
+        int toIndex = Math.min((int) (pageable.getOffset() + pageable.getPageSize()), allBooks.size());
+        List<Book> bookList = allBooks.subList(fromIndex, toIndex);
+        List<Map<String, Object>> bookResList = bookList.stream().map(bookInstance -> {
+            Map<String, Object> res = new HashMap<>();
+            res.put("bookId", bookInstance.getId());
+            res.put("bookName", bookInstance.getNewName());
+            res.put("bookFinishTime", bookInstance.getFinishTime().toString());
+            res.put("bookStar", bookInstance.getStar());
+            res.put("bookFileSize", bookInstance.getFileSize());
+            if (bookInstance.getAuthorId() != null) {
+                Author author = authorService.getAuthorById(bookInstance.getAuthorId());
+                res.put("bookAuthor", author.getName());
+                res.put("bookAuthorUrl", BASE_URL + author.getUrl());
+            }
+            res.put("bookTag", bookInstance.getTag());
+            res.put("bookInformation", bookInstance.getInformation());
+            return res;
+        }).collect(Collectors.toList());
+
+        // 构建page信息
+        Map<String, Object> pageInfo = new HashMap<>();
+        pageInfo.put("pageNumber", pageable.getPageNumber());
+        pageInfo.put("pageSize", pageable.getPageSize());
+        pageInfo.put("totalPages", totalPages);
+        pageInfo.put("totalCount", totalCount);
+
+        Map<String, Object> res = new HashMap<>();
+        res.put("bookList", bookResList);
+        res.put("pageInfo", pageInfo);
+
+        return Result.success(res);
+
+    }
+
+    /**
+     * 构建过滤条件的 Predicate
+     *
+     * @param predicate  传入
+     * @param filterInfo 参数
+     */
+    private void buildFilterPredicate(BooleanBuilder predicate, Map<String, Object> filterInfo) {
+        String classifyName = filterInfo.containsKey("classifyName") ? (String) filterInfo.get("classifyName") : null;
+        String tagName = filterInfo.containsKey("tagName") ? (String) filterInfo.get("tagName") : null;
+        String typeName = filterInfo.containsKey("typeName") ? (String) filterInfo.get("typeName") : null;
+
         List<Long> classifyIdList = classifyName != null ? Stream.of(classifyName.split(","))
                 // 检查 classifyName 是否不为 null。如果 classifyName 为 null，则 classifyIdList 也为 null。
                 // 将逗号分隔的分类名称字符串转换为一个流（Stream），每个分类名称作为流中的一个元素。
@@ -184,11 +259,11 @@ public class BookService {
         // QBook 是一个由 QueryDSL 生成的类，它代表数据库表中的 Book 实体。通过 QBook.book 获取这个类的实例，可以方便地构建查询条件。
         QBook book = QBook.book;
         // BooleanExpression 是 QueryDSL 中用于表示布尔条件的类。初始化组装条件(book.isDeleted为0，即未删除的书籍)
-        BooleanExpression predicate = book.isDeleted.eq(0);
+        // BooleanExpression predicate = book.isDeleted.eq(0);
         // 执行动态条件拼装
         if (classifyIdList != null && !classifyIdList.isEmpty()) {
             // 构建一个条件，筛选分类 ID 在 classifyIdList 中的书籍。predicate.and(...) 将这个条件与之前的条件组合，要求同时满足
-            predicate = predicate.and(book.classifyId.in(classifyIdList));
+            predicate.and(book.classifyId.in(classifyIdList));
         }
         if (tagNameList != null && !tagNameList.isEmpty()) {
             // 使用 tagNameList.stream() 将标签名称列表转换为流（stream）。
@@ -197,39 +272,102 @@ public class BookService {
             // orElse(Expressions.FALSE.isFalse()) 如果没有标签名称，则返回一个永远为 false 的条件。
             // predicate = predicate.and(tagExpression) 将这个条件与之前的条件组合，要求同时满足。
             BooleanExpression tagExpression = tagNameList.stream().map(book.tag::contains).reduce(BooleanExpression::and).orElse(Expressions.FALSE.isFalse());
-            predicate = predicate.and(tagExpression);
+            predicate.and(tagExpression);
         }
         if (typeIdList != null && !typeIdList.isEmpty()) {
-            predicate = predicate.and(book.typeId.in(typeIdList));
+            predicate.and(book.typeId.in(typeIdList));
         }
-        // page的页面下标从0开始
-        // jpaQueryFactory 是 QueryDSL 的 JPAQueryFactory 实例，用于创建和执行查询。
-        // selectFrom(book) 指定要从 Book 表中查询数据。
-        List<Book> allBooks = jpaQueryFactory.selectFrom(book)
-                .where(predicate)
-                .orderBy(book.createTime.asc())
-                .fetch();
-        // 计算总记录数
-        long totalCount = allBooks.size();
-        // 计算总页数
-        long totalPages = (totalCount + pageable.getPageSize() - 1) / pageable.getPageSize();
-        // 分页
-        int fromIndex = (int) pageable.getOffset();
-        int toIndex = Math.min((int) (pageable.getOffset() + pageable.getPageSize()), allBooks.size());
-        List<Book> bookList = allBooks.subList(fromIndex, toIndex);
-        // 构建page信息
-        Map<String, Object> pageInfo = new HashMap<>();
-        pageInfo.put("pageNumber", pageable.getPageNumber());
-        pageInfo.put("pageSize", pageable.getPageSize());
-        pageInfo.put("totalPages", totalPages);
-        pageInfo.put("totalCount", totalCount);
+    }
 
-        Map<String, Object> res = new HashMap<>();
-        res.put("bookList", bookList);
-        res.put("pageInfo", pageInfo);
+    /**
+     * 构建搜索条件的 Predicate
+     *
+     * @param predicate  传入
+     * @param searchInfo 参数
+     */
+    private void buildSearchPredicate(BooleanBuilder predicate, Map<String, Object> searchInfo) {
+        QBook book = QBook.book;
+        String bookName = searchInfo.containsKey("bookName") ? (String) searchInfo.get("bookName") : null;
+        String authorName = searchInfo.containsKey("authorName") ? (String) searchInfo.get("authorName") : null;
+        String mainCharacterName = searchInfo.containsKey("mainCharacterName") ? (String) searchInfo.get("mainCharacterName") : null;
+        String content = searchInfo.containsKey("content") ? (String) searchInfo.get("content") : null;
+        boolean bookNameFuzzy = searchInfo.containsKey("bookNameFuzzy") && (boolean) searchInfo.get("bookNameFuzzy");
+        boolean contentFuzzy = searchInfo.containsKey("contentFuzzy") && (boolean) searchInfo.get("contentFuzzy");
 
-        return Result.success(res);
+        if (bookName != null && !bookName.isEmpty()) {
+            predicate.and(bookNameFuzzy ? book.newName.containsIgnoreCase(bookName) : book.newName.eq(bookName));
+        }
+        // 根据作者名称找到作者的id，判断书籍是否符合要求
+        if (authorName != null && !authorName.isEmpty()) {
+            predicate.and(book.authorId.in(authorService.getAuthorByName(authorName).getId()));
+        }
+        if (mainCharacterName != null && !mainCharacterName.isEmpty()) {
+            predicate.and(book.information.containsIgnoreCase(mainCharacterName));
+        }
+        // TODO:结合ES框架，实现搜索（模糊搜索）
+        if (content != null && !content.isEmpty()) {
+            predicate.and(contentFuzzy ? book.information.containsIgnoreCase(content) : book.information.eq(content));
+        }
+    }
 
+    /**
+     * 构建范围条件的 Predicate
+     *
+     * @param predicate 传入
+     * @param rangeInfo 参数
+     */
+    private void buildRangePredicate(BooleanBuilder predicate, Map<String, Object> rangeInfo) {
+        QBook book = QBook.book;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date finishTimeFrom = rangeInfo.containsKey("finishTimeFrom") ? dateFormat.parse((String) rangeInfo.get("finishTimeFrom")) : null;
+            Date finishTimeTo = rangeInfo.containsKey("finishTimeTo") ? dateFormat.parse((String) rangeInfo.get("finishTimeTo")) : null;
+            int scoreMin = rangeInfo.containsKey("scoreMin") ? (int) rangeInfo.get("scoreMin") : 0;
+            int scoreMax = rangeInfo.containsKey("scoreMax") ? (int) rangeInfo.get("scoreMax") : 100;
+            if (finishTimeFrom != null && finishTimeTo != null) {
+                predicate.and(book.finishTime.between(finishTimeFrom, finishTimeTo));
+            } else if (finishTimeFrom != null) {
+                predicate.and(book.finishTime.goe(finishTimeFrom));
+            } else if (finishTimeTo != null) {
+                predicate.and(book.finishTime.loe(finishTimeTo));
+            }
+            // TODO:增加书籍的各种评分字段：阅读前评分、阅读后评分
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 构建排序条件的表达式
+     * 0-升序 1-降序 2-不排序
+     * 排序优先级-完结时间、上传时间、评分
+     *
+     * @param sortInfo 参数
+     * @return 返回排序表达式
+     */
+    private OrderSpecifier<Date> buildSortExpression(Map<String, Object> sortInfo) {
+        QBook book = QBook.book;
+        // 在强制转换为 Integer 之前，先检查对象是否确实是 Integer 的实例。
+        // 如果不是 Integer，则假设它可能是一个 String，并尝试使用 Integer.parseInt() 进行转换。
+        int orderByFinish = sortInfo.containsKey("orderByFinish") ? (sortInfo.get("orderByFinish") instanceof Integer ? (Integer) sortInfo.get("orderByFinish") : Integer.parseInt((String) sortInfo.get("orderByFinish"))) : 2;
+        int orderByUpload = sortInfo.containsKey("orderByUpload") ? (sortInfo.get("orderByUpload") instanceof Integer ? (Integer) sortInfo.get("orderByUpload") : Integer.parseInt((String) sortInfo.get("orderByUpload"))) : 2;
+        int orderByScore = sortInfo.containsKey("orderByScore") ? (sortInfo.get("orderByScore") instanceof Integer ? (Integer) sortInfo.get("orderByScore") : Integer.parseInt((String) sortInfo.get("orderByScore"))) : 2;
+
+        if (orderByFinish == 0) {
+            return book.finishTime.asc();
+        } else if (orderByFinish == 1) {
+            return book.finishTime.desc();
+        }
+        if (orderByUpload == 0) {
+            return book.createTime.asc();
+        } else if (orderByUpload == 1) {
+            return book.createTime.desc();
+        }
+        // TODO：基于书籍的某项评分排序
+        else {
+            // 默认按创建时间升序（即新上传的在前）
+            return book.createTime.asc();
+        }
     }
 
     public Result addOneBookInfo(Map<String, Object> json) {
@@ -295,7 +433,7 @@ public class BookService {
         Book book = bookRepository.getById(id);
         Map<String, Object> res = new HashMap<>();
         res.put("bookName", book.getNewName());
-        res.put("bookFinishTime", book.getFinishTime());
+        res.put("bookFinishTime", book.getFinishTime().toString());
         res.put("bookStar", book.getStar());
         res.put("bookFileSize", book.getFileSize());
         if (book.getClassifyId() != null) {
