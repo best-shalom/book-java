@@ -1,6 +1,8 @@
 package com.favor.book.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * @author CQ
@@ -9,8 +11,9 @@ import lombok.Data;
  * @description 用于ES检索的书籍长文本字段结构
  */
 
-@Data
-public class BookInfo {
+@Document(indexName = "book")
+public class BookDocument {
+    @Id
     private String id;
     private String name;
     private String author;

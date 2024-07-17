@@ -36,6 +36,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>2.6.13</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-parent</artifactId>
+            <version>2.6.13</version>
+        </dependency>
+
+
 
         <!--
         windows查看mysql版本："mysql 杠-version"
@@ -76,6 +83,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!--Spring Data Elasticsearch,提供对es的支持-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
         <!--QueryDSL支持：https://zhuanlan.zhihu.com/p/99055340-->
         <dependency>

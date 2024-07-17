@@ -3,14 +3,11 @@ package com.favor.book.config;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.instrumentation.OpenTelemetryForElasticsearch;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
-import com.favor.book.entity.Book;
-import com.favor.book.entity.BookInfo;
-import com.favor.book.utils.ElasticSearchUtil;
+import com.favor.book.entity.BookDocument;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import org.apache.http.HttpHost;
@@ -18,7 +15,6 @@ import org.elasticsearch.client.RestClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -59,34 +55,5 @@ public class ElasticsearchConfig {
                 restClient,new JacksonJsonpMapper(),null,esOtelInstrumentation
         );
         return new ElasticsearchClient(transport);
-    }
-
-    public void test() throws IOException {
-        ElasticsearchClient client=createClient();
-
-        BookInfo bookInfo=new BookInfo();
-        bookInfo.setName("测试书籍");
-        IndexRequest<BookInfo> request=IndexRequest.of(
-                i -> i
-                        .index("books")
-                        .id(String.valueOf(bookInfo.getId()))
-                        .document(bookInfo)
-        );
-        IndexResponse response = client.index(request);
-        System.out.println("Indexed with version " + response.version());
-    }
-    public static void main(String[] args) throws IOException {
-        ElasticsearchClient client=createClient();
-
-        BookInfo bookInfo=new BookInfo();
-        bookInfo.setName("测试书籍");
-        IndexRequest<BookInfo> request=IndexRequest.of(
-                i -> i
-                        .index("books")
-                        .id(String.valueOf(bookInfo.getId()))
-                        .document(bookInfo)
-        );
-        IndexResponse response = client.index(request);
-        System.out.println("Indexed with version " + response.version());
     }
 }

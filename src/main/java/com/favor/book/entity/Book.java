@@ -16,6 +16,7 @@ import java.util.Date;
 
 /**
  * 在Book实体类中使用Jackson注解@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})来排除Hibernate代理对象中的属性，这样在序列化时就不会包含这些代理对象。
+ * @author Administrator
  */
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
