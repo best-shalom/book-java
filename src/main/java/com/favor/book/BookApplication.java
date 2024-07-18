@@ -1,13 +1,14 @@
 package com.favor.book;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 
-import javax.persistence.EntityManager;
-import javax.servlet.MultipartConfigElement;
+import jakarta.persistence.EntityManager;
+import jakarta.servlet.MultipartConfigElement;
 
 /**
  * 1.SpringBootApplication注解，这个注解表示该类是一个 Spring Boot 应用。
@@ -45,8 +46,10 @@ public class BookApplication {
     /**
      * 使用QueryDSL的功能时，会依赖使用到JPAQueryFactory，而JPAQueryFactory在这里依赖使用EntityManager，所以在主类中做如下配置，使得Spring自动帮我们注入EntityManager与自动管理JPAQueryFactory
      */
+    @PersistenceContext
+    private EntityManager entityManager;
     @Bean
-    public JPAQueryFactory jpaQueryFactory(EntityManager entityManager){
+    public JPAQueryFactory jpaQueryFactory(){
         return new JPAQueryFactory(entityManager);
     }
 

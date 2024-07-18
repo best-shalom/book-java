@@ -1,223 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--modelVersion: 指定 POM 文件的版本-->
     <modelVersion>4.0.0</modelVersion>
+    <!--groupId: 定义项目所属的组织或者组织ID-->
     <groupId>com.favor</groupId>
+    <!--artifactId: 定义项目的唯一标识符，通常对应项目的名称-->
     <artifactId>book</artifactId>
+    <!--version: 定义项目的版本号-->
     <version>0.0.1-SNAPSHOT</version>
+    <!--name: 项目的名称-->
     <name>book</name>
+    <!--description: 对项目的简要描述-->
     <description>book</description>
     <properties>
-        <java.version>1.8</java.version>
+        <!--java.version: 指定 Java 的版本-->
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <!--spring-boot.version: 指定 Spring Boot 的版本-->
+        <spring-boot.version>3.3.1</spring-boot.version>
+        <!--project.build.sourceEncoding: 指定源代码的编码格式-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--project.reporting.outputEncoding: 指定报告输出的编码格式等-->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>2.6.13</spring-boot.version>
     </properties>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.1</version>
+    </parent>
 
-    <!--指定ES依赖的仓库-->
     <repositories>
+        <!--指定Maven仓库-->
         <repository>
             <id>central</id>
             <url>https://repo.maven.apache.org/maven2</url>
         </repository>
+        <!--指定ES依赖的仓库(其他库差不到就会来这里查)-->
         <repository>
-            <id>co.elastic.clients</id>
-            <url>https://search.maven.org/search?q=g:co.elastic.clients</url>
-        </repository>
-        <repository>
-            <id>org.elasticsearch.client</id>
+            <id>elasticsearch</id>
             <url>https://search.maven.org</url>
         </repository>
     </repositories>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.6.13</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-parent</artifactId>
-            <version>2.6.13</version>
-        </dependency>
-
-
-
-        <!--
-        windows查看mysql版本："mysql 杠-version"
-        在环境变量中配置mysql的bin文件地址即可使用mysql命令-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.28</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.5.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!--解决：java: 找不到符号 类 Generated 程序包 javax.annotation.processing-->
-        <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>1.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!--ApiModel注解-->
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>1.5.13</version>
-        </dependency>
-        <!--SpringDataJPA-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <!--Spring Data Elasticsearch,提供对es的支持-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-        </dependency>
-        <!--QueryDSL支持：https://zhuanlan.zhihu.com/p/99055340-->
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-apt</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-core</artifactId>
-            <version>5.0.0</version>
-        </dependency>
-        <!--Java的ElasticSearch支持，见官方文档：https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/8.12/installation.html-->
-        <dependency>
-            <groupId>co.elastic.clients</groupId>
-            <artifactId>elasticsearch-java</artifactId>
-            <version>8.12.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.12.3</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.json</groupId>
-            <artifactId>jakarta.json-api</artifactId>
-            <version>2.0.1</version>
-        </dependency>
-        <!--ES的REST客户端和其相关依赖-->
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-client</artifactId>
-            <version>8.14.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.14</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>4.4.13</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpasyncclient</artifactId>
-            <version>4.1.5</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore-nio</artifactId>
-            <version>4.4.13</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.15</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.2</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!--opentelemetry监测-->
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-sdk</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-exporter-logging</artifactId>
-        </dependency>
-        <dependency>
-            <!-- Not managed by opentelemetry-bom -->
-            <groupId>io.opentelemetry.semconv</groupId>
-            <artifactId>opentelemetry-semconv</artifactId>
-            <version>1.26.0-alpha</version>
-        </dependency>
-    </dependencies>
+    <!--集中管理依赖版本，通过 dependencyManagement 可以集中定义和控制项目中所有模块所使用的依赖版本，而不需要在每个模块中重复声明版本号-->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -238,18 +65,181 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <!-- Spring Boot Starters:spring-boot-starter 是 Spring Boot 中的一系列依赖项组合，用于简化 Spring Boot 应用程序的依赖管理和配置
+        这些 starter 模块的命名遵循 spring-boot-starter-* 的格式，每个模块都包含了一组特定功能的依赖项 -->
+        <!--spring-boot-starter-web: 提供构建 Web 应用程序所需的依赖项，包括 Spring MVC、嵌入式 Servlet 容器（如Tomcat）等-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>jakarta.annotation</groupId>
+                    <artifactId>jakarta.annotation-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--spring-boot-starter-data-jpa: 提供与 JPA（Java Persistence API）和 Hibernate 集成所需的依赖项，简化了对数据库的访问和操作-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>jakarta.annotation</groupId>
+                    <artifactId>jakarta.annotation-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--spring-boot-starter-data-elasticsearch: 提供与 Elasticsearch 集成所需的依赖项，简化了对 Elasticsearch 的数据操作-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <!--spring-boot-starter-test: 提供用于单元测试和集成测试的依赖项，包括 JUnit、Mockito 等-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+
+        <!--
+        windows查看mysql版本："mysql -Version"
+        在环境变量中配置mysql的bin文件地址即可使用mysql命令-->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.2.0</version>
+        </dependency>
+
+        <!-- MyBatis Plus -->
+        <!-- 解决启动报错：Bean named 'ddlApplicationRunner' is expected to be of type 'org.springframework.boot.Runner'
+        but was actually of type 'org.springframework.beans.factory.support.NullBean'
+        https://github.com/baomidou/mybatis-plus/issues/5867-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <version>3.5.5</version>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+        </dependency>
+
+        <!-- Annotation API:提供标准的Java注解API: 这个依赖是为了使用Jakarta EE（以前称为Java EE）中的注解API。在项目中，它可能用于处理与Java注解相关的任务，如声明@Resource和处理类、方法、字段等的元数据。 -->
+        <!-- springboot3.0 jpa升级使用jakarta -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <!--ApiModel注解:这个依赖是Swagger框架的一部分，用于在代码中使用@ApiModel注解。@ApiModel注解帮助开发者定义API中的数据模型，包括名称、描述、字段、验证规则等，以便于生成符合OpenAPI规范的API文档和定义。-->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.6.14</version>
+        </dependency>
+
+        <!--QueryDSL支持,用于生成类型安全的查询DSL：https://zhuanlan.zhihu.com/p/99055340-->
+        <!--springboot3.0 jpa升级使用jakarta：https://blog.csdn.net/cootia1/article/details/131551718
+        springboot3.0与QueryDSL的兼容性：https://blog.csdn.net/qq_20867219/article/details/130964573
+        确保所有 JPA 相关依赖使用 jakarta.persistence 包。
+        确保 QueryDSL 处理器能正确找到这些类。-->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <classifier>jakarta</classifier>
+            <version>5.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <classifier>jakarta</classifier>
+            <version>5.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-core</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+
+        <!--用于JSON与Java对象的序列化和反序列化-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.17.1</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.json</groupId>
+            <artifactId>jakarta.json-api</artifactId>
+            <version>2.1.3</version>
+        </dependency>
+
+        <!--Java的ElasticSearch支持，见官方文档：https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/8.12/installation.html-->
+        <dependency>
+            <groupId>co.elastic.clients</groupId>
+            <artifactId>elasticsearch-java</artifactId>
+            <version>8.13.4</version>
+        </dependency>
+
+        <!--ES的REST客户端和其相关依赖-->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-client</artifactId>
+            <version>8.13.4</version>
+        </dependency>
+
+        <!--opentelemetry监测-->
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-logging</artifactId>
+        </dependency>
+        <dependency>
+            <!-- Not managed by opentelemetry-bom -->
+            <groupId>io.opentelemetry.semconv</groupId>
+            <artifactId>opentelemetry-semconv</artifactId>
+            <version>1.26.0-alpha</version>
+        </dependency>
+    </dependencies>
+
     <build>
+        <!--plugins: 插件配置，定义项目中使用的各种 Maven 插件，帮助项目实现自动化编译、打包和代码生成，提高开发效率和代码质量-->
         <plugins>
+            <!--maven-compiler-plugin插件用来控制 Maven 如何编译项目中的 Java 代码，包括编译的 Java 版本和编码格式-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.13.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
+                    <source>17</source>
+                    <target>17</target>
+                    <!--结合了 <source> 和 <target> 的作用，表示要编译和生成的代码应该与指定的版本兼容。即 <source> 和 <target> 将会被隐式地设置为 17。-->
+                    <!--<release>17</release>-->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.24</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            <!--spring-boot-maven-plugin插件用来支持将 Spring Boot 应用程序打包成可执行的 JAR 文件，并且可以配置一些运行时行为-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -257,6 +247,12 @@
                 <configuration>
                     <mainClass>com.favor.book.BookApplication</mainClass>
                     <skip>true</skip>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -267,8 +263,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--因为是类型安全的，所以还需要加上Maven APT plugin，使用 APT 自动生成一些类:
-            添加这个插件是为了让程序自动生成query type(查询实体，命名方式为："Q"+对应实体名)。-->
+            <!--apt-maven-plugin插件用于在 Maven 构建过程中生成类型安全的查询实体类（QueryDSL），根据 JPA 实体类自动生成对应的查询类，简化数据库查询操作(查询实体，命名方式为："Q"+对应实体名)-->
             <plugin>
                 <groupId>com.mysema.maven</groupId>
                 <artifactId>apt-maven-plugin</artifactId>
@@ -279,12 +274,21 @@
                             <goal>process</goal>
                         </goals>
                         <configuration>
-                            <!--JPAAnnotationProcessor将查找使用jakarta.persistence.Entity注释进行注释的域类型，并为它们生成查询类型。-->
+                            <!--JPAAnnotationProcessor将查找使用jakarta.persistence.Entity注释进行注释的域类型，并为它们生成查询类型-->
                             <outputDirectory>target/generated-sources</outputDirectory>
                             <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                         </configuration>
                     </execution>
                 </executions>
+                <!--使springboot3兼容querydsl：https://blog.csdn.net/qq_20867219/article/details/130964573-->
+                <dependencies>
+                    <dependency>
+                        <groupId>com.querydsl</groupId>
+                        <artifactId>querydsl-apt</artifactId>
+                        <version>5.1.0</version>
+                        <classifier>jakarta</classifier>
+                    </dependency>
+                </dependencies>
             </plugin>
 
         </plugins>

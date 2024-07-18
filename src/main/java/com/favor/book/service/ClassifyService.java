@@ -5,7 +5,7 @@ import com.favor.book.dao.ClassifyRepository;
 import com.favor.book.entity.Classify;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

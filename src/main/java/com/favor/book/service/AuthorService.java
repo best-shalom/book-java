@@ -6,7 +6,7 @@ import com.favor.book.dao.AuthorRepository;
 import com.favor.book.entity.Author;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.Date;
 import java.util.Optional;
 

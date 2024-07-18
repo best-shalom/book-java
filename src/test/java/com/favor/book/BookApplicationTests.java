@@ -8,9 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class BookApplicationTests {
 
-    // @Autowired
-    // private UserRepository userRepository;
-
     @Test
     public void testSelectList() {
         // List<User> list = userRepository.selectList(null);
