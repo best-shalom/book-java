@@ -16,7 +16,7 @@ import java.util.Date;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@ApiModel(value = "作者信息", description = "")
+@ApiModel(value = "作者信息",description = "")
 @Table(name="author")
 public class Author{
     @Id
@@ -33,8 +33,12 @@ public class Author{
     private String name ;
     @ApiModelProperty(name = "作者简介",notes = "")
     private String information ;
-    @ApiModelProperty(name = "作者链接", notes = "")
-    private String url;
-    @ApiModelProperty(name = "作者合集", notes = "")
-    private String title;
+    @ApiModelProperty(name = "作者链接",notes = "")
+    private String url ;
+    @ApiModelProperty(name = "作者合集",notes = "")
+    private String title ;
+    @ApiModelProperty(name = "作者标签",notes = "")
+    private String tag ;
+    @ApiModelProperty(name = "作者评分",notes = "")
+    private Double score ;
 }

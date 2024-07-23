@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.2.1",
   "createdTime": "2024-1-17 15:56:53",
-  "updatedTime": "2024-4-23 18:32:04",
+  "updatedTime": "2024-7-23 11:05:43",
   "dbConns": [],
   "profile": {
     "default": {
@@ -1303,7 +1303,7 @@
           "hideInGraph": false,
           "refDict": "",
           "extProps": {},
-          "domain": "B72DB88F-18E9-49F4-B469-A1CAC14B056E",
+          "domain": "70E08FCF-00C8-410B-9E4D-A58360271823",
           "id": "1DDCA1EB-1B8A-4B38-A33D-2077D3ED9444"
         },
         {
@@ -1320,8 +1320,42 @@
           "hideInGraph": false,
           "refDict": "",
           "extProps": {},
-          "domain": "B72DB88F-18E9-49F4-B469-A1CAC14B056E",
+          "domain": "70E08FCF-00C8-410B-9E4D-A58360271823",
           "id": "5CD7ED8E-3EC2-403D-9F89-B826948E21F1"
+        },
+        {
+          "defKey": "before_score",
+          "defName": "阅前评分",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "extProps": {},
+          "domain": "FF4459C5-6B45-4DBF-8FC0-E06239BC05B4",
+          "id": "54C4B7B9-614D-43AB-B164-5E3661DE9133"
+        },
+        {
+          "defKey": "after_score",
+          "defName": "阅后评分",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "extProps": {},
+          "domain": "FF4459C5-6B45-4DBF-8FC0-E06239BC05B4",
+          "id": "F135E232-0F20-4D8D-BFA5-66BACC85CDF0"
         }
       ],
       "correlations": [],
@@ -1550,6 +1584,40 @@
           "extProps": {},
           "domain": "97B646DC-6037-4DE9-9149-CECBEF476274",
           "id": "30A3601F-E607-47A2-AA63-34195C54AF55"
+        },
+        {
+          "defKey": "tag",
+          "defName": "作者标签",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "extProps": {},
+          "domain": "97B646DC-6037-4DE9-9149-CECBEF476274",
+          "id": "AFED4EA0-74CE-4691-AA95-C933B68332DC"
+        },
+        {
+          "defKey": "score",
+          "defName": "作者评分",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "extProps": {},
+          "domain": "FF4459C5-6B45-4DBF-8FC0-E06239BC05B4",
+          "id": "EE505B02-6923-40ED-8BA0-D4D33D975EE6"
         }
       ],
       "correlations": [],
