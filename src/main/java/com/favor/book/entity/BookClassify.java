@@ -2,14 +2,11 @@ package com.favor.book.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.util.Date;
 
 @Data
@@ -20,7 +17,7 @@ import java.util.Date;
 @Table(name = "book_classify")
 public class BookClassify {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(name = "主键", notes = "自增主键")
     private Long id;
     @ApiModelProperty(name = "创建时间", notes = "创建时间")

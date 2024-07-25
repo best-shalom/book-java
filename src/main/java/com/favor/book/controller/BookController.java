@@ -24,7 +24,7 @@ public class BookController {
     BookService bookService;
 
     /**
-     * 新增单本书籍
+     * 新增单本书籍文件到本地系统
      * @param file 书籍文件
      * @return 返回是否成功
      */

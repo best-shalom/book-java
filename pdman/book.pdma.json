@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.2.1",
   "createdTime": "2024-1-17 15:56:53",
-  "updatedTime": "2024-7-23 11:05:43",
+  "updatedTime": "2024-7-23 11:54:26",
   "dbConns": [],
   "profile": {
     "default": {
@@ -1337,7 +1337,7 @@
           "hideInGraph": false,
           "refDict": "",
           "extProps": {},
-          "domain": "FF4459C5-6B45-4DBF-8FC0-E06239BC05B4",
+          "domain": "2FE8C60F-70A7-42A8-B936-F9E5F795D6F1",
           "id": "54C4B7B9-614D-43AB-B164-5E3661DE9133"
         },
         {
@@ -1354,7 +1354,7 @@
           "hideInGraph": false,
           "refDict": "",
           "extProps": {},
-          "domain": "FF4459C5-6B45-4DBF-8FC0-E06239BC05B4",
+          "domain": "2FE8C60F-70A7-42A8-B936-F9E5F795D6F1",
           "id": "F135E232-0F20-4D8D-BFA5-66BACC85CDF0"
         }
       ],
@@ -1616,7 +1616,7 @@
           "hideInGraph": false,
           "refDict": "",
           "extProps": {},
-          "domain": "FF4459C5-6B45-4DBF-8FC0-E06239BC05B4",
+          "domain": "2FE8C60F-70A7-42A8-B936-F9E5F795D6F1",
           "id": "EE505B02-6923-40ED-8BA0-D4D33D975EE6"
         }
       ],
@@ -2667,9 +2667,9 @@
         "BDF457FD-9F98-4AC3-A705-7587B00A3BAB": "String"
       },
       {
-        "defKey": "double",
+        "defKey": "decimal",
         "id": "1A0BDC09-0792-4174-9E8E-80BE8DF44B8E",
-        "defName": "小数",
+        "defName": "高精度小数",
         "29D1CE08-4C35-4D2D-AAA9-23D93305B52E": "DECIMAL",
         "A4E23CB7-BB01-4BD1-9F71-F73F3E15A542": "DECIMAL",
         "BFC87171-C74F-494A-B7C2-76B9C55FACC9": "DECIMAL",
@@ -2680,13 +2680,23 @@
         "77BD85E5-9D0D-4096-8427-CBA306FC9C6A": "NUMERIC",
         "11D1FB71-A587-4217-89BA-611B8A1F83E0": "DOUBLE",
         "B363BE0B-F852-49B8-9B2E-F6D2174DEAC1": "REAL",
-        "797A1496-D649-4261-89B4-544132EC3F36": "Double",
-        "895CFD1D-4273-4D32-A2C4-CAC70200AB5B": "Double",
-        "A2EE7B4A-CE62-4290-B00C-B26C1BF18073": "Double",
+        "797A1496-D649-4261-89B4-544132EC3F36": "BigDecimal",
+        "895CFD1D-4273-4D32-A2C4-CAC70200AB5B": "BigDecimal",
+        "A2EE7B4A-CE62-4290-B00C-B26C1BF18073": "BigDecimal",
         "F3AC2415-E86B-40C6-9FEB-F4B7937D2C30": "decimal",
         "81CCA482-3F4D-4EAC-8CF9-F5E7BC098AD2": "double",
         "B91D99E0-9B7C-416C-8737-B760957DAF09": "*float64",
         "BDF457FD-9F98-4AC3-A705-7587B00A3BAB": "f64"
+      },
+      {
+        "defKey": "double",
+        "defName": "二进制浮点数",
+        "id": "4DC08C83-6883-445A-A1E7-116353647323",
+        "29D1CE08-4C35-4D2D-AAA9-23D93305B52E": "DOUBLE",
+        "A4E23CB7-BB01-4BD1-9F71-F73F3E15A542": "DOUBLE",
+        "797A1496-D649-4261-89B4-544132EC3F36": "Double",
+        "895CFD1D-4273-4D32-A2C4-CAC70200AB5B": "Double",
+        "A2EE7B4A-CE62-4290-B00C-B26C1BF18073": "Double"
       },
       {
         "defKey": "int",
@@ -2896,13 +2906,22 @@
       "id": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E"
     },
     {
-      "defKey": "Double",
-      "defName": "小数",
+      "defKey": "Decimal",
+      "defName": "高精度小数",
       "applyFor": "1A0BDC09-0792-4174-9E8E-80BE8DF44B8E",
       "len": 24,
       "scale": 6,
       "uiHint": "",
       "id": "FF4459C5-6B45-4DBF-8FC0-E06239BC05B4"
+    },
+    {
+      "defKey": "Double",
+      "defName": "浮点小数",
+      "applyFor": "4DC08C83-6883-445A-A1E7-116353647323",
+      "len": "",
+      "scale": "",
+      "uiHint": "",
+      "id": "2FE8C60F-70A7-42A8-B936-F9E5F795D6F1"
     },
     {
       "defKey": "Money",
