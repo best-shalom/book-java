@@ -123,39 +123,6 @@ public class BookService {
     }
 
     /**
-     * 根据选择的参数更新书籍信息
-     *
-     * @param bookId       id标识书籍
-     * @param typeName     添加、更新、删除阅读类型
-     * @param classifyName 添加、更新、删除小说分类
-     * @param evaluate     添加、更新、删除评价
-     */
-    public Result updateBookInfo(Long bookId, String typeName, String classifyName, String evaluate) {
-        Book book = getBookById(bookId);
-        if (book == null) {
-            return Result.error("书籍不存在");
-        }
-        if (typeName != null) {
-            Long typeId = typeService.getTypeIdByName(typeName);
-            if (typeId == null) {
-                return Result.error("阅读类型不存在");
-            }
-            book.setTypeId(typeId);
-        }
-        if (classifyName != null) {
-            Long classifyId = classifyService.getClassifyIdByName(classifyName);
-            if (classifyId == null) {
-                return Result.error("小说分类不存在");
-            }
-            book.setClassifyId(classifyId);
-        }
-        if (evaluate != null) {
-            book.setEvaluate(evaluate);
-        }
-        return Result.success(bookRepository.save(book));
-    }
-
-    /**
      * 按照小说类型or阅读类型筛选小说
      *
      * @return 返回指定排序方式的小说列表
@@ -209,6 +176,8 @@ public class BookService {
                 res.put("bookAuthorUrl", BASE_URL + author.getUrl());
             }
             res.put("bookTag", bookInstance.getTag());
+            res.put("bookBeforeScore", bookInstance.getBeforeScore());
+            res.put("bookAfterScore", bookInstance.getAfterScore());
             res.put("bookInformation", bookInstance.getInformation());
             return res;
         }).collect(Collectors.toList());
@@ -451,10 +420,66 @@ public class BookService {
         }
         res.put("bookTag", book.getTag());
         res.put("evaluate", book.getEvaluate());
+        res.put("beforeScore", book.getBeforeScore());
+        res.put("afterScore", book.getAfterScore());
         res.put("information", book.getInformation());
         res.put("bookUrl", book.getBookUrl());
         res.put("bookDownUrl", BASE_URL + book.getDownUrl());
         return res;
     }
 
+    /**
+     * 根据选择的参数更新书籍信息
+     */
+    public Result updateBookInfo(Map<String, Object> json) {
+        Long bookId = Long.parseLong(json.get("bookId").toString());
+        String typeName = json.get("typeName") == null ? null : json.get("typeName").toString();
+        String classifyName = json.get("classifyName") == null ? null : json.get("classifyName").toString();
+        String tagNames = json.get("tagNames") == null ? null : json.get("tagNames").toString();
+        List<String> tagNameList = tagNames  != null ? Stream.of(tagNames.split(",")).map(String::trim).filter(name -> !name.isEmpty()).toList() : null;
+
+        Double beforeScore = json.get("beforeScore") == null ? null : Double.parseDouble(json.get("beforeScore").toString());
+        Double afterScore = json.get("afterScore") == null ? null : Double.parseDouble(json.get("afterScore").toString());
+        String evaluate = json.get("evaluate") == null ? null : json.get("evaluate").toString();
+
+        Book book = getBookById(bookId);
+        if (book == null) {
+            return Result.error("书籍不存在");
+        }
+        if (typeName != null) {
+            Long typeId = typeService.getTypeIdByName(typeName);
+            if (typeId == null) {
+                return Result.error("阅读类型不存在");
+            }
+            book.setTypeId(typeId);
+        }
+        if (classifyName != null) {
+            Long classifyId = classifyService.getClassifyIdByName(classifyName);
+            if (classifyId == null) {
+                return Result.error("小说分类不存在");
+            }
+            book.setClassifyId(classifyId);
+        }
+        if (tagNames != null) {
+            for (String tagName : tagNameList) {
+                Long tagId = tagService.getTagIdByName(tagName);
+                if (tagId == null) {
+                    return Result.error("小说标签不存在");
+                }
+                // 添加书籍与标签的关联
+                bookClassifyService.addBookClassifyTag(bookId, book.getClassifyId(),tagId);
+            }
+            book.setTag(tagNames);
+        }
+        if (beforeScore != null) {
+            book.setBeforeScore(beforeScore);
+        }
+        if (afterScore != null) {
+            book.setAfterScore(afterScore);
+        }
+        if (evaluate != null) {
+            book.setEvaluate(evaluate);
+        }
+        return Result.success(bookRepository.save(book));
+    }
 }

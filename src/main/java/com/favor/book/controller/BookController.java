@@ -17,7 +17,7 @@ import java.util.Map;
  * 尽量统一使controller层直接return，即在service层返回Result对象，而不是直接返回对象，其中如果有些复用的需要提供对象的再考虑在controller层处理
  * 因为这样的话，方法的报错信息这些可以直接在service层根据处理情况添加
  */
-@Controller
+@RestController
 @RequestMapping("/book")
 public class BookController {
     @Resource
@@ -29,13 +29,11 @@ public class BookController {
      * @return 返回是否成功
      */
     @RequestMapping(value = "/addOneBook",method = RequestMethod.POST)
-    @ResponseBody
     public Result addOneBook(MultipartFile file, String newName) {
         return bookService.addOneBookFile(file, newName);
     }
 
     @RequestMapping(value = "/downloadOneBook", method = RequestMethod.POST)
-    @ResponseBody
     public Result downloadOneBook(Long id, String savePath) {
         return bookService.downloadOneBookFile(id, savePath);
     }
@@ -49,7 +47,6 @@ public class BookController {
      * @return 返回添加结果
      */
     @RequestMapping(value = "/addOneBookInfo", method = RequestMethod.POST)
-    @ResponseBody
     public Result addOneBookInfo(@RequestBody Map<String, Object> json) {
         return bookService.addOneBookInfo(json);
     }
@@ -68,7 +65,6 @@ public class BookController {
      * @return 返回分页筛选结果
      */
     @RequestMapping(value = "listBooks", method = RequestMethod.POST)
-    @ResponseBody
     public Result listBooks(@RequestBody Map<String, Object> json) {
         // 从json中提取分页参数(使用@RequestBody只能接收一整个整体json，不能独立接收pageable)
         int page = json.containsKey("page") ? (int) json.get("page") : 0;
@@ -84,14 +80,12 @@ public class BookController {
      * @return 返回单本书籍信息
      */
     @RequestMapping(value = "getBookInfo", method = RequestMethod.GET)
-    @ResponseBody
     public Result getBookById(@RequestParam Long id) {
         return Result.success(bookService.getBookInfo(id));
     }
 
     @RequestMapping(value = "updateBookInfo", method = RequestMethod.POST)
-    @ResponseBody
-    public Result updateBookInfo(Long bookId, String typeName, String classifyName, String evaluate) {
-        return bookService.updateBookInfo(bookId, typeName, classifyName, evaluate);
+    public Result updateBookInfo(@RequestBody Map<String, Object> json) {
+        return bookService.updateBookInfo(json);
     }
 }

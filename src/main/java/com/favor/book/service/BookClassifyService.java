@@ -52,7 +52,7 @@ public class BookClassifyService {
         return bookClassifyRepository.findByBookIdAndTagId(bookId, tagId);
     }
 
-    public BookClassify addBookClassify(Long bookId, Long classifyId, Long tagId) {
+    public BookClassify addBookClassifyTag(Long bookId, Long classifyId, Long tagId) {
         BookClassify exist = getByBookIdAndTagId(bookId, tagId);
         if (exist != null) {
             // 对应的书籍-标签关系已经存在，返回null表示存在
@@ -70,7 +70,7 @@ public class BookClassifyService {
      */
     public void addAllBookClassify(Long bookId, Long classifyId, List<Long> tagIds) {
         for (Long tagId : tagIds) {
-            BookClassify res = addBookClassify(bookId, classifyId, tagId);
+            BookClassify res = addBookClassifyTag(bookId, classifyId, tagId);
         }
     }
 
