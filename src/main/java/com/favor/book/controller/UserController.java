@@ -13,6 +13,7 @@ import jakarta.annotation.Resource;
 /**
  * 1.声明为Controller方法
  * 2.方法的基础路径为/user
+ *
  * @author Administrator
  */
 @Controller
@@ -28,19 +29,20 @@ public class UserController {
      * 1.RequestMapping注解：访问地址localhost:8080/user/login
      * 2.ResponseBody注解
      * 接受参数名为account和password
-     * @param account 账号
+     *
+     * @param account  账号
      * @param password 密码
      * @return 登录结果
      */
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public Result login(@RequestParam(name = "account") String account, @RequestParam(name = "password") String password) {
-        return userService.login(account,password);
+        return userService.login(account, password);
     }
 
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public Result register(@RequestParam(name = "account") String account, @RequestParam(name = "password") String password) {
-        return userService.register(account,password);
+        return userService.register(account, password);
     }
 }

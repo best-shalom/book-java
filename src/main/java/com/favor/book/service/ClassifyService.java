@@ -74,7 +74,7 @@ public class ClassifyService {
      */
     public Result updateClassify(Classify classify) {
         Optional<Classify> optionalClassify = classifyRepository.findById(classify.getId());
-        if (!optionalClassify.isPresent()) {
+        if (optionalClassify.isEmpty()) {
             return Result.error("分组不存在");
         }
         Classify newClassify = optionalClassify.get();

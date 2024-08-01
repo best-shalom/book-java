@@ -67,7 +67,7 @@ public class TagService {
      */
     public Result updateTag(Tag tag) {
         Optional<Tag> optionalTag = tagRepository.findById(tag.getId());
-        if (!optionalTag.isPresent()) {
+        if (optionalTag.isEmpty()) {
             return Result.error("标签不存在");
         }
         Tag newTag = optionalTag.get();

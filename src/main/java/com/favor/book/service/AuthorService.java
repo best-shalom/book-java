@@ -50,7 +50,7 @@ public class AuthorService {
 
     public Result updateAuthor(Author author) {
         Optional<Author> optionalAuthor = authorRepository.findById(author.getId());
-        if (!optionalAuthor.isPresent()) {
+        if (optionalAuthor.isEmpty()) {
             return Result.error("作者不存在");
         }
         Author newAuthor = optionalAuthor.get();

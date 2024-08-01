@@ -19,16 +19,16 @@ import java.io.IOException;
 
 public class ElasticSearchUtil {
     // ES地址
-    String serverUrl = "http://localhost:9200";
+    final String serverUrl = "http://localhost:9200";
     // RestClient 是 ElasticSearch 提供的低级 REST 客户端
-    RestClient restClient = RestClient
+    final RestClient restClient = RestClient
             .builder(HttpHost.create(serverUrl))
             .build();
     // 创建一个传输对象，使用 RestClientTransport，并传入 Jackson JSON 映射器。
-    ElasticsearchTransport transport = new RestClientTransport(
+    final ElasticsearchTransport transport = new RestClientTransport(
             restClient, new JacksonJsonpMapper());
     // 使用传输对象创建一个 Elasticsearch API 客户端。
-    ElasticsearchClient esClient = new ElasticsearchClient(transport);
+    final ElasticsearchClient esClient = new ElasticsearchClient(transport);
 
     public static void main(String[] args) throws IOException {
 

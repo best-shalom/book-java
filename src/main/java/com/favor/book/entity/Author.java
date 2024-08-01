@@ -9,6 +9,9 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.Date;
 
+/**
+ * @author Administrator
+ */
 @Data
 @Entity
 @DynamicInsert

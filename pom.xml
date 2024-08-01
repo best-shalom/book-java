@@ -240,6 +240,7 @@
                 </configuration>
             </plugin>
             <!--spring-boot-maven-plugin插件用来支持将 Spring Boot 应用程序打包成可执行的 JAR 文件，并且可以配置一些运行时行为-->
+            <!--对于使用Maven构建的Spring Boot应用，spring-boot-maven-plugin是关键插件，负责处理Fat JAR的构建-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

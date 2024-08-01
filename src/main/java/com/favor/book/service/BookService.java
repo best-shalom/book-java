@@ -1,5 +1,7 @@
 package com.favor.book.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.favor.book.common.Result;
 import com.favor.book.dao.BookRepository;
 import com.favor.book.entity.*;
@@ -100,7 +102,9 @@ public class BookService {
 
 
     public Book getBookById(Long id) {
-        return bookRepository.getById(id);
+        // spring-data-jpa:3.3.1：'getById(ID)' 已弃用
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        return optionalBook.orElse(null);
     }
 
     public List<Book> getBookByIdList(List<Long> bookIdList) {
@@ -129,13 +133,10 @@ public class BookService {
      */
     public Result listBooks(Pageable pageable, Map<String, Object> json) {
         QBook book = QBook.book;
-        Map<String, Object> filterInfo = json.containsKey("filterInfo") && json.get("filterInfo") instanceof Map ? (Map<String, Object>) json.get("filterInfo") : Collections.emptyMap();
-
-        Map<String, Object> searchInfo = json.containsKey("searchInfo") && json.get("searchInfo") instanceof Map ? (Map<String, Object>) json.get("searchInfo") : Collections.emptyMap();
-
-        Map<String, Object> rangeInfo = json.containsKey("rangeInfo") && json.get("rangeInfo") instanceof Map ? (Map<String, Object>) json.get("rangeInfo") : Collections.emptyMap();
-
-        Map<String, Object> sortInfo = json.containsKey("sortInfo") && json.get("sortInfo") instanceof Map ? (Map<String, Object>) json.get("sortInfo") : Collections.emptyMap();
+        Map<String, Object> filterInfo = getMapFormJson(json, "filterInfo");
+        Map<String, Object> searchInfo = getMapFormJson(json, "searchInfo");
+        Map<String, Object> rangeInfo = getMapFormJson(json, "rangeInfo");
+        Map<String, Object> sortInfo = getMapFormJson(json, "sortInfo");
 
         // 构建查询条件
         BooleanBuilder predicate = new BooleanBuilder();
@@ -197,6 +198,15 @@ public class BookService {
 
     }
 
+    @SuppressWarnings("unchecked")
+    private <K, V> Map<K, V> getMapFormJson(Map<String,Object> json, String key){
+        Object value = json.get(key);
+        if(value instanceof Map){
+            return (Map<K, V>) value;
+        }
+        return Collections.emptyMap();
+    }
+
     /**
      * 构建过滤条件的 Predicate
      *
@@ -221,7 +231,7 @@ public class BookService {
                 // 过滤掉 null 值，确保分类 ID 列表中没有无效的 ID。
                 .collect(Collectors.toList()) : null;
         // 将处理后的流收集为一个列表（List）。
-        List<String> tagNameList = tagName != null ? Stream.of(tagName.split(",")).map(String::trim).filter(name -> !name.isEmpty()).collect(Collectors.toList()) : null;
+        List<String> tagNameList = tagName != null ? Stream.of(tagName.split(",")).map(String::trim).filter(name -> !name.isEmpty()).toList() : null;
         List<Long> typeIdList = typeName != null ? Stream.of(typeName.split(",")).map(String::trim).filter(name -> !name.isEmpty()).map(typeService::getTypeIdByName).filter(Objects::nonNull).collect(Collectors.toList()) : null;
 
         // Pageable 是Spring Data库中定义的一个接口，用于构造翻页查询，是所有分页相关信息的一个抽象，通过该接口，我们可以得到和分页相关所有信息（例如pageNumber、pageSize等），这样，Jpa就能够通过pageable参数来得到一个带分页信息的Sql语句。
@@ -360,8 +370,13 @@ public class BookService {
         Long classifyId = addClassify.getId();
 
 
+        // 使用 JSON 解析库,初始化 ObjectMapper
+        ObjectMapper mapper = new ObjectMapper();
         // 存储标签信息
-        List<Map<String, String>> tagInfo = (List<Map<String, String>>) json.get("tag_info");
+        List<Map<String, String>> tagInfo = mapper.convertValue(
+                json.get("tag_info"), new TypeReference<>() {
+                }
+        );
         List<Long> tagIds = new ArrayList<>();
         List<String> tagNames = new ArrayList<>();
         for (Map<String, String> oneTag : tagInfo) {
@@ -387,7 +402,7 @@ public class BookService {
             book.setClassifyId(classifyId);
             book.setTag(String.join(",", tagNames));
             book.setInformation((String) json.get("book_info"));
-            Map<String, String> downInfo = (Map<String, String>) json.get("down_info");
+            Map<String, String> downInfo = getMapFormJson(json, "down_info");
             book.setDownUrl(downInfo.get("href"));
             Book addBook = addBook(book);
             // 将书籍与分类、标签关联
@@ -399,7 +414,11 @@ public class BookService {
     }
 
     public Map<String, Object> getBookInfo(Long id) {
-        Book book = bookRepository.getById(id);
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        Book book = optionalBook.orElse(null);
+        if (book == null) {
+            return null;
+        }
         Map<String, Object> res = new HashMap<>();
         res.put("bookName", book.getNewName());
         res.put("bookFinishTime", book.getFinishTime().toString());

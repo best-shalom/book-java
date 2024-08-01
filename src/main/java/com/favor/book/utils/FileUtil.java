@@ -14,12 +14,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Administrator
+ */
 @Component
 public class FileUtil {
     // 设置上传文件存储路径,路径设置为绝对路径https://blog.csdn.net/daniel7443/article/details/51620308
-    String filePath = "F:/book";
+    final String filePath = "F:/book";
     // 设置时间格式
-    SimpleDateFormat sdf=new SimpleDateFormat("/yyyy/MM/dd/");
+    final SimpleDateFormat sdf=new SimpleDateFormat("/yyyy/MM/dd/");
 
     /**
      * 单个文件上传

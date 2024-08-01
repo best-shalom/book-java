@@ -1,12 +1,10 @@
 package com.favor.book.controller;
 
 import com.favor.book.config.ElasticsearchConfig;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.annotation.Resource;
-import java.io.IOException;
 
 /**
  * @author CQ
@@ -21,7 +19,7 @@ public class ElasticsearchController {
     @Resource
     ElasticsearchConfig elasticsearchConfig;
     @RequestMapping("/test")
-    public void test() throws IOException {
+    public void test(){
 
     }
 }

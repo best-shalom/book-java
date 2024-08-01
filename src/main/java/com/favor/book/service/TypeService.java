@@ -66,7 +66,7 @@ public class TypeService {
 
     public Result updateType(Type type) {
         Optional<Type> optionalType = typeRepository.findById(type.getId());
-        if (!optionalType.isPresent()) {
+        if (optionalType.isEmpty()) {
             return Result.error("类型不存在");
         }
         Type newType = optionalType.get();

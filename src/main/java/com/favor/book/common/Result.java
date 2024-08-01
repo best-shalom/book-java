@@ -1,7 +1,12 @@
 package com.favor.book.common;
 
 import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * @author Administrator
+ */
+@Setter
 @Getter
 public class Result {
     // 响应码，1 代表成功; 0 代表失败
@@ -35,15 +40,4 @@ public class Result {
         return new Result(0, msg, null);
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
 }
